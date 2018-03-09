@@ -1,2 +1,5 @@
 # vue-route-demo
-easy vue +vue-router simple简单的vue+ vue-router simple
+easy vue + vue-router简单简单的vue + vue-router简单
+cmd->:
+npm install
+webpack-dev-server
