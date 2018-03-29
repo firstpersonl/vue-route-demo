@@ -1,12 +1,9 @@
 <template>
-    <div id="head_menu">
-        <el-menu class="el-menu-demo" mode="horizontal" @select="handleSelect">
-            <el-menu-item index="10" @click="collapse()" class="collapse_btn">
-                <i class="el-icon-menu"></i>
-            </el-menu-item>
-        </el-menu>
-        <div class="menu_collapse" :class="{'collapsed':isCollapse}">
-            <el-menu
+    <div id="leftMenu">
+        <el-row>
+            <el-col>
+                <h3 class="text-center">客栈帮商户后台</h3>
+                <el-menu
                         :default-active="$route.path"
                         class="el-menu-vertical-demo"
                         @open="handleOpen"
@@ -82,44 +79,40 @@
                     </router-link>
 
                 </el-menu>
-        </div>
+            </el-col>
+        </el-row>
+
     </div>
 </template>
-
 <script>
+    import 'element-ui/lib/theme-chalk/menu.css';
+    import 'element-ui/lib/theme-chalk/menu-item.css';
+    import 'element-ui/lib/theme-chalk/menu-item-group.css';
+    import 'element-ui/lib/theme-chalk/icon.css';
     export default {
-        name: 'head_menu',
+        name: 'leftMenu',
         data() {
-            return {
-                isCollapse: false
+            return{
+
             }
         },
         methods: {
-            collapse() {
-                this.isCollapse = !this.isCollapse;
+            isActive(input) {
+                const paths = Array.isArray(input) ? input : [input]
+                return paths.some(path => {
+                    if (this.$route.path === '/') {
+                        return false;
+                    } else if (path === '/index') {
+                        return true;
+                    }
+                    return this.$route.path.indexOf(path) === 0;
+                })
             }
         }
     }
 </script>
-
 <style lang="css">
-    .menu_collapse{
-        position: absolute;
-        top: 61px;
-        left: 0;
-        display: none;
-        z-index: 99999;
-        width: 100%;
-    }
-    .collapsed{
-        display: block !important;
-    }
-    @media only screen and (min-width: 767px){
-        .menu_collapse {
-            display: none!important;
-        }
-        .collapse_btn {
-            display: none!important;
-        }
+    .text-center{
+        text-align: center;
     }
 </style>

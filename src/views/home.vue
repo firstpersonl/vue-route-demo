@@ -1,33 +1,21 @@
 <template>
-  <div id="indexP">
-    <ol>
-      <li v-for="todo in todos" v-bind="todo.text">
-      </li>
-    </ol>
-    <button @click="eClick()" type="button" name="button">事件</button>
-  </div>
+    <div id="index">
+        土产风物
+    </div>
 </template>
 
 <script>
-export default {
-  name: 'indexP',
-  data() {
-    return {
-      todos: [
-        {
-          text: '324324'
+    export default {
+        name: 'index',
+        data() {
+            return {
+
+            }
         },
-        {text: '2343242'},
-        {text: '24324'}
-      ]
+        methods: {
+
+        }
     }
-  },
-  methods: {
-    eClick() {
-      console.log('some message...');
-    }
-  }
-}
 </script>
 
 <style lang="css">

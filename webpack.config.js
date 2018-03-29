@@ -25,7 +25,7 @@ module.exports = {
                 exclude: /node_modules/
             },
             {
-                test: /\.(png|jpg|gif|svg)$/,
+                test: /\.(png|jpg|gif|svg|woff|ttf)$/,
                 loader: 'file-loader',
                 options: {
                     name: '[name].[ext]?[hash]'
@@ -52,7 +52,7 @@ module.exports = {
     devServer: {//webpack-dev-server配置
         historyApiFallback: true,//不跳转
         noInfo: true,
-        inline: true//实时刷新
+        inline: true
     },
     performance: {
         hints: false
@@ -61,7 +61,7 @@ module.exports = {
 }
 
 if (process.env.NODE_ENV === 'production') {
-    module.exports.devtool = '#source-map'
+    module.exports.devtool = '#source-map';
     // http://vue-loader.vuejs.org/en/workflow/production.html
     module.exports.plugins = (module.exports.plugins || []).concat([
         new webpack.DefinePlugin({
