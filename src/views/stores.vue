@@ -2,7 +2,7 @@
     <el-main id="store_list">
         <el-main>
             <el-row :gutter="20">
-                <el-col :span="8" :md="8" :sm="12" :xs="24" v-for="store in stores">
+                <el-col :span="8" :md="8" :sm="12" :xs="24" v-for="store in stores" :key = "store.id">
                     <el-card :body-style="{ padding: '0px' }">
                         <img :src="store.img" class="image">
                         <div style="padding: 14px;">
@@ -39,36 +39,42 @@ export default {
             stores:[
                 {
                     title: '好吃的汉堡',
+                    id: 1,
                     img: '/src/assets/imgs/hamburger.png',
                     status: true,
                     free: 23.00
                 },
                 {
                     title: '好吃的汉堡',
+                    id: 2,
                     img: '/src/assets/imgs/hamburger.png',
                     status: false,
                     free: 23.00
                 },
                 {
                     title: '好吃的汉堡',
+                    id: 3,
                     img: '/src/assets/imgs/hamburger.png',
                     status: true,
                     free: 23.00
                 },
                 {
                     title: '好吃的汉堡',
+                    id: 4,
                     img: '/src/assets/imgs/hamburger.png',
                     status: true,
                     free: 23.00
                 },
                 {
                     title: '好吃的汉堡',
+                    id:5,
                     img: '/src/assets/imgs/hamburger.png',
                     status: true,
                     free: 23.00
                 },
                 {
                     title: '好吃的汉堡',
+                    id: 6,
                     img: '/src/assets/imgs/hamburger.png',
                     status: true,
                     free: 23.00
