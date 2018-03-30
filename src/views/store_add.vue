@@ -26,11 +26,13 @@
                 </el-col>
             </el-form-item>
             <el-form-item label="制作类型">
-                <el-select v-model="form.madeType">
-                    <el-option label="纯手工" value="PURE_MANUAL"></el-option>
-                    <el-option label="半手工" value="HALF_MANUAL"></el-option>
-                    <el-option label="机械" value="MECHANICAL"></el-option>
-                </el-select>
+                <el-col :span="16">
+                    <el-select v-model="form.madeType">
+                        <el-option label="纯手工" value="PURE_MANUAL"></el-option>
+                        <el-option label="半手工" value="HALF_MANUAL"></el-option>
+                        <el-option label="机械" value="MECHANICAL"></el-option>
+                    </el-select>
+                </el-col>
             </el-form-item>
             <el-form-item label="库存">
                 <el-col :span="16">
@@ -70,13 +72,18 @@
                             action="https://jsonplaceholder.typicode.com/posts/"
                             list-type="picture-card"
                             limit="10"
+                            ref="uploads"
                             :on-preview="handlePictureCardPreview"
-                            :on-remove="handleRemove">
+                            :on-remove="handleRemove"
+                            :auto-upload="false"
+                            :http-request="qy_server_upload"
+                            :file-list="fileList">
                         <i class="el-icon-plus"></i>
                     </el-upload>
                     <el-dialog :visible.sync="dialogVisible">
                         <img width="100%" :src="dialogImageUrl" alt="">
                     </el-dialog>
+                    <el-button style="margin-top: 10px;" size="mini" type="primary" @click="upload()">上传到服务器</el-button>
                 </div>
             </div>
 
@@ -117,7 +124,9 @@
                 discountSecondNum: 5,
 
                 dialogImageUrl: '',
-                dialogVisible: false
+                dialogVisible: false,
+                fileList: [],
+                percentage: 0
             }
         },
         watch: {
@@ -139,6 +148,53 @@
             handlePictureCardPreview(file) {
                 this.dialogImageUrl = file.url;
                 this.dialogVisible = true;
+            },
+            upload(){
+                this.$refs.uploads.submit();
+            },
+            qy_server_upload(obj){
+                const _this = this;
+                const files = obj.file;
+                const params = {
+                    hotelId:0,
+                    type: 'STORE_COV',
+                    fileName: files.length ? files[0].name : files.name,
+                }
+                this.$ajax({
+                    method: 'get',
+                    url: 'http://gl.kezhanbang.cn/api/oss/gen-fields.json',
+                    params: params
+                }).then(function(fields) {
+                    const client = new OSS.Wrapper({
+                        region: 'http://kzbpic.oss-cn-qingdao.aliyuncs.com',
+                        accessKeyId: fields.data.OSSAccessKeyId,
+                        accessKeySecret: fields.data.policy,
+                        stsToken: fields.data.signature,
+                        bucket: fields.data.key
+                    });
+                    if (files) {
+                        let resultUpload = ''
+                        for (let i = 0; i < files.length; i++) {
+                            const file = files[i]
+                            // 随机命名
+                            let random_name = this.random_string(6) + '_' + new Date().getTime() + '.' + file.name.split('.').pop()
+                            // 上传
+                            client.multipartUpload(random_name, file, {
+                                progress: function* (percentage, cpt) {
+                                    // 上传进度
+                                    _this.percentage = percentage
+                                }
+                            }).then((results) => {
+                                // 上传完成
+                                const url = 'http://kzbpic.oss-cn-qingdao.aliyuncs.com/'+ results.name;
+                                _this.url = url;
+                                console.log(url);
+                            }).catch((err) => {
+                                console.log(err)
+                            })
+                        }
+                    }
+                });
             }
         }
     }
@@ -146,5 +202,13 @@
 <style lang="css">
     .text-center {
         text-align: center;
+    }
+    @media (max-width: 765px)  {
+        .el-col-16 {
+            width: 100%;
+        }
+        .el-select {
+            width: 100%;
+        }
     }
 </style>

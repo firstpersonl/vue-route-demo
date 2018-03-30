@@ -54,10 +54,13 @@
     }
     @media (max-width: 576px) {
         .el-main {
-            padding: 0;
+            padding: 0 10px 0 0;
         }
         .el-header{
             padding: 0;
         }
+    }
+    ul {
+        list-style: none;
     }
 </style>

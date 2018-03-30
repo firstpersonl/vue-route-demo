@@ -2,7 +2,7 @@
     <el-main id="store_list">
         <el-main>
             <el-row :gutter="20">
-                <el-col :span="8" :md="8" :sm="12" :xs="24" v-for="store in stores" :key = "store.id" class="card_col">
+                <el-col :span="8" :md="6" :sm="8" :xs="12" v-for="store in stores" :key = "store.id" class="card_col">
                     <el-card :body-style="{ padding: '0px' }">
                         <img :src="store.img" class="image" style="width: 100%">
                         <div style="padding: 14px;">
