@@ -25,6 +25,7 @@
     import 'element-ui/lib/theme-chalk/main.css';
     import 'element-ui/lib/theme-chalk/footer.css';
     import 'element-ui/lib/theme-chalk/display.css';
+    import 'element-ui/lib/theme-chalk/base.css';
 
     export default {
         name: 'main_context',
@@ -33,6 +34,13 @@
         },
         components: {
             HeaderTab, container, LeftMenu
+        },
+        watch: {
+            '$route' (to, from) {
+                const toDepth = to.path.split('/').length
+                const fromDepth = from.path.split('/').length
+                this.transitionName = toDepth < fromDepth ? 'slide-right' : 'slide-left'
+            }
         }
     }
 </script>

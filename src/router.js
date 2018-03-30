@@ -4,6 +4,7 @@ import homePage from './views/home.vue';
 import aboutPage from './views/about.vue';
 import displayList from './views/display_list.vue';
 import displayAdd from './views/display_add.vue';
+import storeAdd from './views/store_add.vue';
 import stores from './views/stores.vue';
 
 Vue.use(Router);
@@ -17,7 +18,7 @@ export default new Router({
         },
         {
             path: '/store_add',
-            component: displayAdd
+            component: storeAdd
         },
         {
             path: '/about',

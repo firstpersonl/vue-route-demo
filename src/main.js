@@ -2,6 +2,7 @@ import Vue from 'vue';
 import App from './app.vue';
 import router from './router.js';
 import axios from 'axios';
+
 import {
     Pagination,
     Dialog,
@@ -134,7 +135,6 @@ Vue.use(Header);
 Vue.use(Aside);
 Vue.use(Main);
 Vue.use(Footer);
-
 Vue.use(Loading.directive);
 
 Vue.prototype.$loading = Loading.service;

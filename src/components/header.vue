@@ -90,6 +90,7 @@
                 </router-link>
 
             </el-menu>
+
         </div>
     </div>
 </template>
@@ -106,6 +107,11 @@
             collapse() {
                 this.isCollapse = !this.isCollapse;
             }
+        },
+        watch: {
+            '$route'(to, from) {
+                this.isCollapse = !this.isCollapse;
+            }
         }
     }
 </script>
@@ -118,10 +124,12 @@
     .el-header {
         box-shadow: 0px 1px 10px 0px rgba(50, 50, 50, 0.2);
     }
+
     #head_menu ul li {
         padding: 0 10px;
     }
-    #head_menu ul li a{
+
+    #head_menu ul li a {
         text-decoration: none;
     }
 
