@@ -5,7 +5,7 @@ module.exports = {
     entry: './src/main.js',//值可以是字符串、数组或对象
     output: {
         path: path.resolve(__dirname, './dist'),//Webpack结果存储
-        publicPath: '/dist/',//懵懂，懵逼，//然而“publicPath”项则被许多Webpack的插件用于在生产模式和开发模式下下更新内嵌到css、html，img文件里的url值
+        publicPath: '/static/fonts/',//懵懂，懵逼，//然而“publicPath”项则被许多Webpack的插件用于在生产模式和开发模式下下更新内嵌到css、html，img文件里的url值
         filename: 'build.js'
     },
     module: {
