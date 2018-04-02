@@ -69,21 +69,20 @@
                 <label class="el-form-item__label" style="width: 80px">商品图片</label>
                 <div class="el-form-item__content" style="margin-left: 80px">
                     <el-upload
-                            action="https://jsonplaceholder.typicode.com/posts/"
+                            action="http://kzbpic.oss-cn-qingdao.aliyuncs.com"
                             list-type="picture-card"
                             limit="10"
-                            ref="uploads"
                             :on-preview="handlePictureCardPreview"
+                            :on-success="uploadSuccess"
                             :on-remove="handleRemove"
-                            :auto-upload="false"
-                            :http-request="qy_server_upload"
+                            :before-upload="qy_server_upload"
+                            :data="file_data"
                             :file-list="fileList">
                         <i class="el-icon-plus"></i>
                     </el-upload>
                     <el-dialog :visible.sync="dialogVisible">
                         <img width="100%" :src="dialogImageUrl" alt="">
                     </el-dialog>
-                    <el-button style="margin-top: 10px;" size="mini" type="primary" @click="upload()">上传到服务器</el-button>
                 </div>
             </div>
 
@@ -99,7 +98,6 @@
     import 'element-ui/lib/theme-chalk/dialog.css';
     export default {
         name: 'store_add',
-
         data() {
             return {
                 form: {
@@ -109,9 +107,9 @@
                     price: '',
                     totalNumber: '',
                     discount: 95,
-                    categoryId: 2,
+                    categoryId: '2',
                     craftsman: '',
-                    madeType: '',
+                    madeType: 'PURE_MANUAL',
                     date1: '',
                     date2: '',
                     delivery: false,
@@ -126,7 +124,8 @@
                 dialogImageUrl: '',
                 dialogVisible: false,
                 fileList: [],
-                percentage: 0
+                percentage: 0,
+                file_data: {}
             }
         },
         watch: {
@@ -149,57 +148,32 @@
                 this.dialogImageUrl = file.url;
                 this.dialogVisible = true;
             },
-            upload(){
-                this.$refs.uploads.submit();
+            uploadSuccess(response, file, fileList){
+                console.log(file)
             },
             qy_server_upload(obj){
                 const _this = this;
-                const files = obj.file;
+                const files = obj;
                 const params = {
                     hotelId:0,
                     type: 'STORE_COV',
-                    fileName: files.length ? files[0].name : files.name,
+                    fileName: files.name,
                 }
                 this.$ajax({
                     method: 'get',
                     url: 'http://gl.kezhanbang.cn/api/oss/gen-fields.json',
                     params: params
                 }).then(function(fields) {
-                    const client = new OSS.Wrapper({
-                        region: 'http://kzbpic.oss-cn-qingdao.aliyuncs.com',
-                        accessKeyId: fields.data.OSSAccessKeyId,
-                        accessKeySecret: fields.data.policy,
-                        stsToken: fields.data.signature,
-                        bucket: fields.data.key
-                    });
-                    if (files) {
-                        let resultUpload = ''
-                        for (let i = 0; i < files.length; i++) {
-                            const file = files[i]
-                            // 随机命名
-                            let random_name = this.random_string(6) + '_' + new Date().getTime() + '.' + file.name.split('.').pop()
-                            // 上传
-                            client.multipartUpload(random_name, file, {
-                                progress: function* (percentage, cpt) {
-                                    // 上传进度
-                                    _this.percentage = percentage
-                                }
-                            }).then((results) => {
-                                // 上传完成
-                                const url = 'http://kzbpic.oss-cn-qingdao.aliyuncs.com/'+ results.name;
-                                _this.url = url;
-                                console.log(url);
-                            }).catch((err) => {
-                                console.log(err)
-                            })
-                        }
-                    }
+                    return _this.file_data =  fields.data
                 });
             }
         }
     }
 </script>
 <style lang="css">
+    #store_add {
+        padding: 0 15px;
+    }
     .text-center {
         text-align: center;
     }

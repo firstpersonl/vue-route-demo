@@ -11,6 +11,7 @@
                                 <el-button type="text" class="button">详情</el-button>
                                 <el-switch
                                         v-model="store.status"
+                                        @change="status_change(store)"
                                         active-color="#13ce66"
                                         inactive-color="#ff4949">
                                 </el-switch>
@@ -22,9 +23,14 @@
             </el-row>
         </el-main>
         <el-footer>
-            <!--<el-pagination>-->
-
-            <!--</el-pagination>-->
+            <el-pagination
+                    background
+                    layout="prev, pager, next"
+                    :page-count="pageConfig.page_count"
+                    :page-size="pageConfig.page_size"
+                    @current-change="loadData"
+                    :current-page.aysc="pageConfig.current_page">
+            </el-pagination>
         </el-footer>
     </el-main>
 
@@ -32,55 +38,61 @@
 <script>
 import 'element-ui/lib/theme-chalk/card.css';
 import 'element-ui/lib/theme-chalk/switch.css';
+import 'element-ui/lib/theme-chalk/message.css';
 export default {
     name: 'store_list',
     data() {
         return {
-            stores:[
-                {
-                    title: '好吃的汉堡',
-                    id: 1,
-                    img: '/src/assets/imgs/hamburger.png',
-                    status: true,
-                    free: 23.00
-                },
-                {
-                    title: '好吃的汉堡',
-                    id: 2,
-                    img: '/src/assets/imgs/hamburger.png',
-                    status: false,
-                    free: 23.00
-                },
-                {
-                    title: '好吃的汉堡',
-                    id: 3,
-                    img: '/src/assets/imgs/hamburger.png',
-                    status: true,
-                    free: 23.00
-                },
-                {
-                    title: '好吃的汉堡',
-                    id: 4,
-                    img: '/src/assets/imgs/hamburger.png',
-                    status: true,
-                    free: 23.00
-                },
-                {
-                    title: '好吃的汉堡',
-                    id:5,
-                    img: '/src/assets/imgs/hamburger.png',
-                    status: true,
-                    free: 23.00
-                },
-                {
-                    title: '好吃的汉堡',
-                    id: 6,
-                    img: '/src/assets/imgs/hamburger.png',
-                    status: true,
-                    free: 23.00
-                }
-            ]
+            stores:[],
+            pagination: {
+                page_count: 0,
+                page_size: 10,
+                current_page: 0
+            }
         }
+    },
+    computed: {
+        pageConfig: function () {
+            return this.pagination
+        }
+    },
+    methods: {
+        status_change(store) {
+            //todo http request do something
+            this.$message({
+                message: store.title + (store.status ? '上架成功' : '已下架'),
+                type: store.status?'success':'warning'
+            });
+        },
+        loadData() {
+            const _this = this;
+            _this.$root.$children[0].loading =true;
+            const params = {
+                page: _this.pagination.current_page,
+                size: _this.pagination.page_size
+            };
+            _this.$ajax({
+                url: _this.BASE_PATH + '/api/store/list',
+                method: 'get',
+                params: params,
+                dataType: 'json'
+            }).then(function(data) {
+                _this.stores = data.data.content;
+                _this.pagination.page_count = data.data.totalPages;
+                _this.pagination.current_page = data.data.number;
+                _this.$root.$children[0].loading =false;
+
+            }).catch(function(data) {
+                _this.$message({
+                    message: '加载失败，请稍后重试！',
+                    type: 'error'
+                });
+                _this.$root.$children[0].loading =false;
+            });
+        }
+    },
+    created: function () {
+        this.loadData()
     }
 }
 </script>

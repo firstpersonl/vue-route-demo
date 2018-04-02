@@ -150,6 +150,8 @@ Vue.config.debug = true;
 Vue.config.devtools = true;
 
 Vue.prototype.$ajax = axios;
+const BASE_PATH = 'http://localhost:8080';
+Vue.prototype.BASE_PATH = BASE_PATH;
 new Vue({
     router,
     el: '#app_init',

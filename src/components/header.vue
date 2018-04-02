@@ -42,10 +42,10 @@
                     <el-menu-item-group>
                         <template slot="title">小店管理</template>
                         <router-link to="/shop_list" tag="li">
-                            <el-menu-item index="2-1"><i class="el-icon-goods"></i> 所有小店</el-menu-item>
+                            <el-menu-item index="/shop_list"><i class="el-icon-goods"></i> 所有小店</el-menu-item>
                         </router-link>
                         <router-link to="/shop_add" tag="li">
-                            <el-menu-item index="2-2"><i class="el-icon-plus"></i> 添加小店</el-menu-item>
+                            <el-menu-item index="/shop_add"><i class="el-icon-plus"></i> 添加小店</el-menu-item>
                         </router-link>
                     </el-menu-item-group>
                 </el-submenu>
@@ -56,34 +56,34 @@
                     </template>
                     <el-menu-item-group>
                         <template slot="title">玩法管理</template>
-                        <router-link to="party_list" tag="li">
-                            <el-menu-item index="3-1"><i class="el-icon-star-on"></i> 我的玩法</el-menu-item>
+                        <router-link to="/party_list" tag="li">
+                            <el-menu-item index="/party_list"><i class="el-icon-star-on"></i> 我的玩法</el-menu-item>
                         </router-link>
                         <router-link to="/party_add" tag="li">
-                            <el-menu-item index="3-2"><i class="el-icon-document"></i> 发布玩法</el-menu-item>
+                            <el-menu-item index="/party_add"><i class="el-icon-document"></i> 发布玩法</el-menu-item>
                         </router-link>
                     </el-menu-item-group>
                 </el-submenu>
                 <router-link to="/store_orders" tag="li">
-                    <el-menu-item index="4">
+                    <el-menu-item index="/store_orders">
                         <i class="el-icon-document"></i>
                         <span slot="title">风物订单</span>
                     </el-menu-item>
                 </router-link>
                 <router-link to="/store_settle" tag="li">
-                    <el-menu-item index="5">
+                    <el-menu-item index="/store_settle">
                         <i class="el-icon-document"></i>
                         <span slot="title">风物结算</span>
                     </el-menu-item>
                 </router-link>
                 <router-link to="/party_orders" tag="li">
-                    <el-menu-item index="6">
+                    <el-menu-item index="/party_orders">
                         <i class="el-icon-document"></i>
                         <span slot="title">玩法订单</span>
                     </el-menu-item>
                 </router-link>
                 <router-link to="/party_settle" tag="li">
-                    <el-menu-item index="7">
+                    <el-menu-item index="/party_settle">
                         <i class="el-icon-document"></i>
                         <span slot="title">玩法结算</span>
                     </el-menu-item>

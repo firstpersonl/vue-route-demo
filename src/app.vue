@@ -7,10 +7,10 @@
             <el-header>
                 <header-tab></header-tab>
             </el-header>
-            <el-main class="main_mt_15">
+            <el-main class="main_mt_15" v-loading="loading">
                 <router-view></router-view>
             </el-main>
-            <el-footer>Footer</el-footer>
+            <el-footer>©2013-2017 客栈帮 蜀ICP备13025558号-1</el-footer>
         </el-container>
     </el-container>
 </template>
@@ -26,11 +26,14 @@
     import 'element-ui/lib/theme-chalk/footer.css';
     import 'element-ui/lib/theme-chalk/display.css';
     import 'element-ui/lib/theme-chalk/base.css';
+    import 'element-ui/lib/theme-chalk/loading.css';
 
     export default {
         name: 'main_context',
         data() {
-
+            return {
+                loading: true
+            }
         },
         components: {
             HeaderTab, container, LeftMenu
@@ -54,7 +57,7 @@
     }
     @media (max-width: 576px) {
         .el-main {
-            padding: 0 10px 0 0;
+            padding: 0;
         }
         .el-header{
             padding: 0;
@@ -62,5 +65,16 @@
     }
     ul {
         list-style: none;
+    }
+    .el-footer {
+        height: 20px !important;
+        color: #ccc;
+        font-size: 12px;
+    }
+    .el-aside {
+        border-right: solid 1px #e6e6e6;
+    }
+    .el-menu {
+        border-right: none;
     }
 </style>

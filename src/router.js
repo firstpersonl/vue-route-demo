@@ -6,6 +6,13 @@ import displayList from './views/display_list.vue';
 import displayAdd from './views/display_add.vue';
 import storeAdd from './views/store_add.vue';
 import stores from './views/stores.vue';
+import partyList from  './views/party_list.vue';
+import partyAdd from  './views/party_add.vue';
+import storeOrder from  './views/store_order.vue';
+import partyOrders from './views/party_orders.vue';
+import partySettle from './views/party_settle.vue';
+import storeSettle from './views/store_settle.vue';
+import userInfo from './views/user_info.vue';
 
 Vue.use(Router);
 
@@ -32,30 +39,33 @@ export default new Router({
             path: '/shop_add',
             component:displayAdd
         },
-        // {
-        //     path: '/party_list',
-        //     component:
-        // },
-        // {
-        //     path: '/party_add',
-        //     component:
-        // },
-        // {
-        //     path: '/store_orders',
-        //     component:
-        // },
-        // {
-        //     path: '/store_settle',
-        //     component:
-        // },
-        // {
-        //     path: '/party_orders',
-        //     component:
-        // },
-        // {
-        //     path: '/party_settle',
-        //     component:
-        // }
+        {
+            path: '/party_list',
+            component: partyList
+        },
+        {
+            path: '/party_add',
+            component:partyAdd
+        },
+        {
+            path: '/store_orders',
+            component: storeOrder
+        },
+        {
+            path: '/store_settle',
+            component: storeSettle
+        },
+        {
+            path: '/party_orders',
+            component: partyOrders
+        },
+        {
+            path: '/party_settle',
+            component: partySettle
+        },
+        {
+            path: '/user_info',
+            component: userInfo
+        }
     ]
-
 })
