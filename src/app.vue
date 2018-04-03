@@ -7,7 +7,7 @@
             <el-header>
                 <header-tab></header-tab>
             </el-header>
-            <el-main class="main_mt_15" v-loading="loading">
+            <el-main class="main_mt_15 main_view">
                 <router-view></router-view>
             </el-main>
             <el-footer>©2013-2017 客栈帮 蜀ICP备13025558号-1</el-footer>
@@ -31,9 +31,6 @@
     export default {
         name: 'main_context',
         data() {
-            return {
-                loading: true
-            }
         },
         components: {
             HeaderTab, container, LeftMenu
@@ -54,6 +51,9 @@
     }
     .main_mt_15{
         margin-top: 15px;
+    }
+    .main_view {
+        position: relative;
     }
     @media (max-width: 576px) {
         .el-main {

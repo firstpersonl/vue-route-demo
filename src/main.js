@@ -68,7 +68,6 @@ import {
     Aside,
     Main,
     Footer,
-    Loading,
     MessageBox,
     Message,
     Notification
@@ -136,9 +135,7 @@ Vue.use(Header);
 Vue.use(Aside);
 Vue.use(Main);
 Vue.use(Footer);
-Vue.use(Loading.directive);
 
-Vue.prototype.$loading = Loading.service;
 Vue.prototype.$msgbox = MessageBox;
 Vue.prototype.$alert = MessageBox.alert;
 Vue.prototype.$confirm = MessageBox.confirm;
@@ -150,7 +147,7 @@ Vue.config.debug = true;
 Vue.config.devtools = true;
 
 Vue.prototype.$ajax = axios;
-const BASE_PATH = 'http://localhost:8080';
+const BASE_PATH = 'http://localhost:8081';
 Vue.prototype.BASE_PATH = BASE_PATH;
 new Vue({
     router,

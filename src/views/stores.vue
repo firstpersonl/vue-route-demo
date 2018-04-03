@@ -1,8 +1,8 @@
 <template>
-    <el-main id="store_list">
-        <el-main>
+    <div id="store_list">
+        <el-container>
             <el-row :gutter="20">
-                <el-col :span="8" :md="6" :sm="8" :xs="12" v-for="store in stores" :key = "store.id" class="card_col">
+                <el-col :span="8" :md="6" :sm="8" :xs="12" v-for="store in stores" :key="store.id" class="card_col">
                     <el-card :body-style="{ padding: '0px' }">
                         <img :src="store.img" class="image" style="width: 100%">
                         <div style="padding: 14px;">
@@ -21,88 +21,95 @@
                     </el-card>
                 </el-col>
             </el-row>
-        </el-main>
-        <el-footer>
+        </el-container>
+        <div v-show="pageConfig.page_count > 0">
             <el-pagination
                     background
                     layout="prev, pager, next"
                     :page-count="pageConfig.page_count"
                     :page-size="pageConfig.page_size"
                     @current-change="loadData"
-                    :current-page.aysc="pageConfig.current_page">
+                    :current-page.aysc="pageConfig.current_page + 1">
             </el-pagination>
-        </el-footer>
-    </el-main>
+        </div>
 
+    </div>
 </template>
 <script>
-import 'element-ui/lib/theme-chalk/card.css';
-import 'element-ui/lib/theme-chalk/switch.css';
-import 'element-ui/lib/theme-chalk/message.css';
-export default {
-    name: 'store_list',
-    data() {
-        return {
-            stores:[],
-            pagination: {
-                page_count: 0,
-                page_size: 10,
-                current_page: 0
-            }
-        }
-    },
-    computed: {
-        pageConfig: function () {
-            return this.pagination
-        }
-    },
-    methods: {
-        status_change(store) {
-            //todo http request do something
-            this.$message({
-                message: store.title + (store.status ? '上架成功' : '已下架'),
-                type: store.status?'success':'warning'
-            });
-        },
-        loadData() {
-            const _this = this;
-            _this.$root.$children[0].loading =true;
-            const params = {
-                page: _this.pagination.current_page,
-                size: _this.pagination.page_size
-            };
-            _this.$ajax({
-                url: _this.BASE_PATH + '/api/store/list',
-                method: 'get',
-                params: params,
-                dataType: 'json'
-            }).then(function(data) {
-                _this.stores = data.data.content;
-                _this.pagination.page_count = data.data.totalPages;
-                _this.pagination.current_page = data.data.number;
-                _this.$root.$children[0].loading =false;
+    import 'element-ui/lib/theme-chalk/card.css';
+    import 'element-ui/lib/theme-chalk/switch.css';
+    import 'element-ui/lib/theme-chalk/message.css';
+    import {Loading} from 'element-ui';
 
-            }).catch(function(data) {
-                _this.$message({
-                    message: '加载失败，请稍后重试！',
-                    type: 'error'
+    export default {
+        name: 'store_list',
+        data() {
+            return {
+                stores: [],
+                pagination: {
+                    page_count: 0,
+                    page_size: 10,
+                    current_page: 0
+                }
+            }
+        },
+        computed: {
+            pageConfig: function () {
+                return this.pagination
+            }
+        },
+        methods: {
+            status_change(store) {
+                //todo http request do something
+                this.$message({
+                    message: store.title + (store.status ? '上架成功' : '已下架'),
+                    type: store.status ? 'success' : 'warning'
                 });
-                _this.$root.$children[0].loading =false;
-            });
+            },
+            loadData() {
+                let target = document.querySelector('.main_view');
+                let loadingInstance = Loading.service({
+                    target: target,
+                    text: '加载中'
+                });
+                const _this = this;
+                const params = {
+                    page: _this.pagination.current_page,
+                    size: _this.pagination.page_size
+                };
+                _this.$ajax({
+                    url: _this.BASE_PATH + '/api/store/list',
+                    method: 'get',
+                    params: params,
+                    dataType: 'json'
+                }).then(function (data) {
+                    _this.stores = data.data.content;
+                    _this.pagination.page_count = data.data.totalPages;
+                    _this.pagination.current_page = data.data.number - 1;
+                    loadingInstance.close();
+                }).catch(function (data) {
+                    _this.$message({
+                        message: '加载失败，请稍后重试！',
+                        type: 'error'
+                    });
+                    loadingInstance.close();
+                });
+            }
+        },
+        mounted: function () {
+            this.loadData();
         }
-    },
-    created: function () {
-        this.loadData()
     }
-}
 </script>
 <style lang="css">
-    .card_cur{
+    .card_cur {
         float: right;
         padding: 12px 0;
         color: #b11d04;
     }
+
     .card_col {
         margin-bottom: 15px;
     }
+
 </style>

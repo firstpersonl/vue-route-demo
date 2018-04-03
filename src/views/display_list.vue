@@ -32,6 +32,7 @@
 <script>
     import 'element-ui/lib/theme-chalk/container.css';
     import 'element-ui/lib/theme-chalk/pagination.css';
+    import {Loading} from 'element-ui';
 
     export default {
         data() {
@@ -53,6 +54,11 @@
                 });
             },
             loadData(current_page) {
+                let target = document.querySelector('.main_view');
+                let loadingInstance = Loading.service({
+                    target: target,
+                    text: '加载中'
+                });
                 const _this = this;
                 if (current_page) {
                     _this.pagination.current_page = current_page-1;
@@ -72,13 +78,13 @@
                     _this.stores = data.data.content;
                     _this.pagination.page_count = data.data.totalPages;
                     _this.pagination.current_page = data.data.number;
-                    _this.$root.$children[0].loading =false;
+                    loadingInstance.close();
                 }).catch(function () {
                     _this.$message({
                         message: '加载失败，请稍后重试！',
                         type: 'error'
                     });
-                    _this.$root.$children[0].loading =false;
+                    loadingInstance.close();
                 })
             }
         },
