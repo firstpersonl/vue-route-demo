@@ -46,7 +46,8 @@ module.exports = {
     },
     resolve: {
         alias: {
-            'vue$': 'vue/dist/vue.esm.js'
+            'vue$': 'vue/dist/vue.esm.js',
+            'jquery': 'jquery'
         }
     },
     devServer: {//webpack-dev-server配置

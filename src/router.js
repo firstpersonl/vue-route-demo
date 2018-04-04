@@ -37,7 +37,7 @@ export default new Router({
         },
         {
             path: '/shop_add',
-            component:displayAdd
+            component: displayAdd
         },
         {
             path: '/party_list',

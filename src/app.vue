@@ -3,7 +3,7 @@
         <el-aside class="hidden-xs-only">
             <Left-menu></Left-menu>
         </el-aside>
-        <el-container>
+        <el-container id="main_container">
             <el-header>
                 <header-tab></header-tab>
             </el-header>

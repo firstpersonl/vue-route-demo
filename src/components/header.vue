@@ -110,7 +110,8 @@
         },
         watch: {
             '$route'(to, from) {
-                this.isCollapse = !this.isCollapse;
+                if(this.isCollapse)
+                    this.isCollapse = !this.isCollapse;
             }
         }
     }

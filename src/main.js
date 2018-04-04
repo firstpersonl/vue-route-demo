@@ -3,7 +3,6 @@ import App from './app.vue';
 import router from './router.js';
 import axios from 'axios';
 
-
 import {
     Pagination,
     Dialog,
@@ -143,11 +142,11 @@ Vue.prototype.$prompt = MessageBox.prompt;
 Vue.prototype.$notify = Notification;
 Vue.prototype.$message = Message;
 
-Vue.config.debug = true;
-Vue.config.devtools = true;
+// Vue.config.debug = true;
+// Vue.config.devtools = true;
 
 Vue.prototype.$ajax = axios;
-const BASE_PATH = 'http://localhost:8081';
+const BASE_PATH = 'http://localhost:8080';
 Vue.prototype.BASE_PATH = BASE_PATH;
 new Vue({
     router,

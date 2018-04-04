@@ -4,7 +4,7 @@
             <el-row :gutter="20">
                 <el-col :span="8" :md="6" :sm="8" :xs="12" v-for="store in stores" :key="store.id" class="card_col">
                     <el-card :body-style="{ padding: '0px' }">
-                        <img :src="store.img" class="image" style="width: 100%">
+                        <img :src="store.cover.src" class="image" style="width: 100%">
                         <div style="padding: 14px;">
                             <span v-text="store.title"></span>
                             <div class="bottom clearfix">
@@ -15,7 +15,7 @@
                                         active-color="#13ce66"
                                         inactive-color="#ff4949">
                                 </el-switch>
-                                <span class="card_cur" v-text="store.free+'￥'"></span>
+                                <span class="card_cur" v-text="store.price+'￥'"></span>
                             </div>
                         </div>
                     </el-card>
@@ -67,7 +67,7 @@
                 });
             },
             loadData() {
-                let target = document.querySelector('.main_view');
+                let target = document.querySelector('#main_container');
                 let loadingInstance = Loading.service({
                     target: target,
                     text: '加载中'
