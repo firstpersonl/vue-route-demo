@@ -3,7 +3,8 @@
         <el-form ref="form" :model="form" :rules="rules" size="small" label-width="80px">
             <el-form-item label="商品名称" prop="title">
                 <el-col :span="16">
-                    <el-input v-model="form.title"></el-input>
+                    <el-input v-model="form.title">
+                    </el-input>
                 </el-col>
             </el-form-item>
             <!--<el-form-item label="选择分类" prop="categoryId">-->
@@ -13,7 +14,8 @@
             <!--</el-form-item>-->
             <el-form-item label="商品产地" prop="producingArea">
                 <el-col :span="16">
-                    <el-input v-model="form.producingArea"></el-input>
+                    <el-input v-model="form.producingArea">
+                    </el-input>
                 </el-col>
             </el-form-item>
             <el-form-item label="工匠" prop="craftsman">
@@ -25,9 +27,12 @@
             <el-form-item label="制作类型" prop="madeType">
                 <el-col :span="16">
                     <el-select v-model="form.madeType">
-                        <el-option label="纯手工" value="PURE_MANUAL"></el-option>
-                        <el-option label="半手工" value="HALF_MANUAL"></el-option>
-                        <el-option label="机械" value="MECHANICAL"></el-option>
+                        <el-option label="纯手工" value="PURE_MANUAL">
+                        </el-option>
+                        <el-option label="半手工" value="HALF_MANUAL">
+                        </el-option>
+                        <el-option label="机械" value="MECHANICAL">
+                        </el-option>
                     </el-select>
                 </el-col>
             </el-form-item>
@@ -51,7 +56,7 @@
                     </el-input>
                 </el-col>
             </el-form-item>
-            <el-form-item label="折扣" prop="discount">
+            <el-form-item label="栖居族折扣" prop="discount">
                 <el-col :span="16">
                     <el-input v-model.number="form.discount" placeholder="数字96表示9.6折，输入范围应在10-100之间">
                     </el-input>
@@ -90,8 +95,8 @@
                     </vue-editor>
                 </el-col>
             </el-form-item>
-            <el-form-item>
-                <el-button type="primary" @click="form_submit('form')">立即创建</el-button>
+            <el-form-item style="float: right">
+                <el-button type="primary" @click="form_submit('form')" v-text="isLoading?'保存中...':'立即添加'"></el-button>
                 <el-button>取消</el-button>
             </el-form-item>
         </el-form>
@@ -103,7 +108,6 @@
     import 'element-ui/lib/theme-chalk/dialog.css';
     import {VueEditor} from 'vue2-editor'
     import {Loading} from 'element-ui';
-    import $ from 'jquery';
 
     export default {
         components: {

@@ -54,7 +54,7 @@
                 });
             },
             loadData(current_page) {
-                let target = document.querySelector('.main_view');
+                let target = document.querySelector('.main_container');
                 let loadingInstance = Loading.service({
                     target: target,
                     text: '加载中'
@@ -74,7 +74,6 @@
                     params: params,
                     dataType: 'json',
                 }).then(function (data) {
-                    console.log(data);
                     _this.stores = data.data.content;
                     _this.pagination.page_count = data.data.totalPages;
                     _this.pagination.current_page = data.data.number;

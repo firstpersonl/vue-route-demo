@@ -4,7 +4,7 @@
             <el-row :gutter="20">
                 <el-col :span="8" :md="6" :sm="8" :xs="12" v-for="store in stores" :key="store.id" class="card_col">
                     <el-card :body-style="{ padding: '0px' }">
-                        <img :src="store.cover.src" class="image" style="width: 100%">
+                        <img :src="store.cover.src+'@636w_636h_1c_1e'" class="image" style="width: 100%;">
                         <div style="padding: 14px;">
                             <span v-text="store.title"></span>
                             <div class="bottom clearfix">
@@ -22,14 +22,14 @@
                 </el-col>
             </el-row>
         </el-container>
-        <div v-show="pageConfig.page_count > 0">
+        <div v-show="pagination.page_count > 0">
             <el-pagination
                     background
                     layout="prev, pager, next"
-                    :page-count="pageConfig.page_count"
-                    :page-size="pageConfig.page_size"
-                    @current-change="loadData"
-                    :current-page.aysc="pageConfig.current_page + 1">
+                    :page-count="pagination.page_count"
+                    :page-size="pagination.page_size"
+                    @current-change="headerCurrentChange"
+                    :current-page.aysc="pagination.current_page">
             </el-pagination>
         </div>
 
@@ -49,7 +49,7 @@
                 pagination: {
                     page_count: 0,
                     page_size: 10,
-                    current_page: 0
+                    current_page: 1
                 }
             }
         },
@@ -66,6 +66,10 @@
                     type: store.status ? 'success' : 'warning'
                 });
             },
+            headerCurrentChange(currentPage) {
+                this.pagination.current_page = currentPage;
+                this.loadData();
+            },
             loadData() {
                 let target = document.querySelector('#main_container');
                 let loadingInstance = Loading.service({
@@ -74,7 +78,7 @@
                 });
                 const _this = this;
                 const params = {
-                    page: _this.pagination.current_page,
+                    page: _this.pagination.current_page - 1,
                     size: _this.pagination.page_size
                 };
                 _this.$ajax({
@@ -85,7 +89,7 @@
                 }).then(function (data) {
                     _this.stores = data.data.content;
                     _this.pagination.page_count = data.data.totalPages;
-                    _this.pagination.current_page = data.data.number - 1;
+                    _this.pagination.current_page = data.data.number + 1;
                     loadingInstance.close();
                 }).catch(function (data) {
                     _this.$message({
@@ -111,5 +115,8 @@
     .card_col {
         margin-bottom: 15px;
     }
-
+    .el-row {
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+    }
 </style>
