@@ -1,24 +1,25 @@
 <template>
     <div id="display_list">
-        <el-main>
-            <el-row :gutter="20">
-                <el-col :span="8" :md="6" :sm="8" :xs="12" v-for="store in stores" :key = "store.id" class="card_col">
+        <div>
+            <el-row :gutter="10">
+                <el-col :span="8" :md="6" :sm="8" :xs="12" v-for="store in stores" :key = "store.id" class="card_col" style="margin-bottom: 15px;">
                     <el-card :body-style="{ padding: '0px' }">
-                        <img :src="store.imgUrl" class="image" style="width: 100%">
+                        <router-link :to="'/shop/'+store.id"><img :src="store.imgUrl" class="image" style="width: 100%"></router-link>
                         <div style="padding: 8px;">
-                            <span v-text="store.name"></span>
+                            <h4 v-text="store.name"></h4>
                             <div class="bottom clearfix">
-                                <el-button type="text">详情</el-button>
-                                <el-button type="info" size="mini" v-if="store.isshow ===0" class="display_card_mini_btn">通知审核</el-button>
-                                <el-button type="danger" size="mini" class="display_card_mini_btn">删除</el-button>
+                                <el-button type="warning" size="mini" v-show="store.isshow === 0"
+                                           icon="el-icon-bell" @click="invalid(store.name)"></el-button>
+                                <el-button type="danger" size="mini" icon="el-icon-delete" @click="display_delete(store.id)"></el-button>
                             </div>
                         </div>
                     </el-card>
                 </el-col>
             </el-row>
-        </el-main>
+        </div>
+        <div style="clear:both;"></div>
         <el-footer>
-            <el-pagination
+            <el-pagination v-show="pagination.page_count > 1"
                     background
                     layout="prev, pager, next"
                     :page-count="pagination.page_count"
@@ -52,6 +53,63 @@
                     message: store.title + (store.status ? '上架成功' : '已下架'),
                     type: store.status?'success':'warning'
                 });
+            },
+            display_delete(id) {
+                const _this = this;
+                _this.$ajax({
+                    url: _this.BASE_PATH + '/api/display/delete',
+                    method: 'get',
+                    params: {display_id: id},
+                    dataType: 'json'
+                }).then((_) => {
+                    if (_.data.status == 'SUCCESS') {
+                        _this.stores.splice(this.stores.findIndex((item) => {
+                            return item.id == id
+                        }), 1);
+                        _this.$message({
+                            message: '删除成功',
+                            type: 'info'
+                        })
+                    } else {
+                        _this.$message({
+                            message: '删除失败',
+                            type: 'error'
+                        })
+                    }
+                }).catch((_) => {
+                    _this.$message({
+                        message: '删除失败',
+                        type: 'error'
+                    })
+                })
+            },
+            invalid(title) {
+                const _this = this;
+                _this.$ajax({
+                    url: _this.BASE_PATH + '/api/display/invalid',
+                    method: 'get',
+                    params: {title: title},
+                    dataType: 'json'
+                }).then((_)=>{
+                    if(_.data.status == 'SUCCESS') {
+                        _this.$message({
+                            message: '审核申请发送成功',
+                            type: 'success'
+                        });
+                        //event.setAttribute("disabled","disabled");
+                    } else {
+                        _this.$message({
+                            message: '审核申请发送失败',
+                            type: 'info'
+                        })
+                    }
+                    return event;
+                }).catch((_) => {
+                    _this.$message({
+                        message: '审核申请发送失败',
+                        type: 'info'
+                    })
+                })
             },
             loadData(current_page) {
                 let target = document.querySelector('.main_container');

@@ -1,8 +1,8 @@
 <template>
     <div id="head_menu">
+        <h3 class="text-center float_l head_text collapse_btn">客栈帮商户后台</h3>
         <el-menu class="el-menu-demo head_menu" mode="horizontal" @select="handleSelect">
             <li class="el-menu-item"><a href="/logout">退出</a></li>
-
             <el-menu-item index="/user_info" :route="{path: '/user_info'}">
                 <router-link to="/user_info" tag="span">个人中心</router-link>
             </el-menu-item>
@@ -121,7 +121,16 @@
     .head_menu {
         float: right;
     }
-
+    .head_text {
+        padding-left: 15px;
+        font-size: 16px;
+        height: 60px;
+        margin: 0;
+        line-height: 60px;
+    }
+    .float_l {
+        float: left;
+    }
     .el-header {
         box-shadow: 0px 1px 10px 0px rgba(50, 50, 50, 0.2);
     }

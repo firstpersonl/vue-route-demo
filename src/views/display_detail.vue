@@ -25,10 +25,10 @@
                 </el-col>
             </el-form-item>
             <!--<el-form-item label="店主姓名" prop="boosName">-->
-            <!--<el-col :span="16">-->
-            <!--<el-input v-model="form.boosName">-->
-            <!--</el-input>-->
-            <!--</el-col>-->
+                <!--<el-col :span="16">-->
+                    <!--<el-input v-model="form.boosName">-->
+                    <!--</el-input>-->
+                <!--</el-col>-->
             <!--</el-form-item>-->
             <el-form-item label="小店电话" prop="phone">
                 <el-col :span="16">
@@ -37,10 +37,10 @@
                 </el-col>
             </el-form-item>
             <!--<el-form-item label="店主微信" prop="weChat">-->
-            <!--<el-col :span="16">-->
-            <!--<el-input v-model="form.weChat">-->
-            <!--</el-input>-->
-            <!--</el-col>-->
+                <!--<el-col :span="16">-->
+                    <!--<el-input v-model="form.weChat">-->
+                    <!--</el-input>-->
+                <!--</el-col>-->
             <!--</el-form-item>-->
             <el-form-item label="营业时间" prop="workTime">
                 <el-col :span="8">
@@ -164,19 +164,19 @@
                     {name: '思', value: 3},
                     {name: '用', value: 4}
                 ],
-                goodsTypes: [{value: '体验课和工作坊', label: '体验课和工作坊'},
-                    {value: '音乐会', label: '音乐会'},
-                    {value: '社会公益', label: '社会公益'},
-                    {value: '艺术', label: '艺术'},
-                    {value: '餐饮', label: '餐饮'},
-                    {value: '大自然', label: '大自然'},
-                    {value: '运动', label: '运动'},
-                    {value: '历史', label: '历史'},
-                    {value: '娱乐', label: '娱乐'},
-                    {value: '健康与养生', label: '健康与养生'}
+                goodsTypes: [{value: '体验课和工作坊',label: '体验课和工作坊'},
+                    {value: '音乐会',label: '音乐会'},
+                    {value: '社会公益',label: '社会公益'},
+                    {value: '艺术',label: '艺术'},
+                    {value: '餐饮',label: '餐饮'},
+                    {value: '大自然',label: '大自然'},
+                    {value: '运动',label: '运动'},
+                    {value: '历史',label: '历史'},
+                    {value: '娱乐',label: '娱乐'},
+                    {value: '健康与养生',label: '健康与养生'}
                 ],
                 committing: false,
-                work_time: [new Date(), new Date()],
+                work_time: [new Date(),new Date()],
                 province: [],
                 city: [],
                 form: {
@@ -193,7 +193,7 @@
                     weChat: '',
                     imgUrl: '',
                     city: null,
-                    province: null,
+                    province:null,
                     describe: ''
                 },
                 rules: {
@@ -243,7 +243,7 @@
                         {required: true, message: '请编辑小店详细信息'}
                     ],
                     imgUrl: [
-                        {required: true, message: '请上传封面图片'}
+                        {required: true, message:'请上传封面图片'}
                     ]
                 },
                 dialogImageUrl: '',
@@ -271,11 +271,11 @@
                 // `this` 指向 vm 实例
                 return this.form.disCount / 10 + '折';
             },
-            workTime_text: function () {
-                this.form.workTime = (this.work_time[0].getHours() >= 10 ? this.work_time[0].getHours() : '0' + this.work_time[0].getHours()) + ':'
-                    + (this.work_time[0].getMinutes() >= 10 ? this.work_time[0].getMinutes() : '0' + this.work_time[0].getMinutes()) + '-'
-                    + (this.work_time[1].getHours() >= 10 ? this.work_time[1].getHours() : '0' + this.work_time[1].getHours()) + ':' +
-                    (this.work_time[1].getMinutes() >= 10 ? this.work_time[1].getMinutes() : '0' + this.work_time[1].getMinutes());
+            workTime_text: function() {
+                this.form.workTime = (this.work_time[0].getHours()>=10?this.work_time[0].getHours():'0'+this.work_time[0].getHours())+ ':'
+                    +(this.work_time[0].getMinutes()>=10?this.work_time[0].getMinutes():'0'+this.work_time[0].getMinutes())+'-'
+                    +(this.work_time[1].getHours()>=10?this.work_time[1].getHours():'0'+this.work_time[1].getHours())+ ':' +
+                    (this.work_time[1].getMinutes()>=10?this.work_time[1].getMinutes():'0'+this.work_time[1].getMinutes());
                 return this.form.workTime;
             }
         },
@@ -445,18 +445,40 @@
             },
             get_city(super_id) {
                 const _this = this;
-                _this.form.city = null;
                 _this.$ajax({
                     url: _this.BASE_PATH + '/api/city/city',
                     method: 'get',
                     dataType: 'json',
                     params: {superId: super_id}
                 }).then((_) => {
-                    _this.city = _.data
-                    _this.form.city = _.data[0].id;
+                    _this.city = _.data;
+                })
+            },
+            loadDetail(id) {
+                const _this = this;
+                _this.$ajax({
+                    url: _this.BASE_PATH + '/api/display/detail',
+                    method: 'get',
+                    dataType: 'json',
+                    params: { display_id: id }
+                }).then((_) => {
+                    if(_.data.province.id) {
+                        _this.get_city(_.data.province.id);
+                    }
+                    _this.form = _.data;
+                    _this.form.province = _.data.province.id;
+                    _this.form.city = _.data.city.id;
+                    _this.fileList.push({
+                        url: _.data.imgUrl,
+                        name: 'aaaabbbcccddd123.png',
+                    })
+                }).catch((_) => {
+                    _this.$message({
+                        message: '加载失败',
+                        type: 'error'
+                    })
                 })
             }
-
         },
         created: function () {
             const _this = this;
@@ -466,7 +488,11 @@
                 dataType: 'json'
             }).then((p) => {
                 _this.province = p.data;
-            })
+            });
+
+            if(this.$route.params.id) {
+                _this.loadDetail(this.$route.params.id)
+            }
         }
     }
 </script>
@@ -479,7 +505,6 @@
         .el-col-line {
             width: 47.5% !important;
         }
-
         .el-select {
             width: 100%;
         }
@@ -510,7 +535,6 @@
     .ql-container.ql-snow {
         border: none !important;
     }
-
     .line {
         text-align: center;
     }

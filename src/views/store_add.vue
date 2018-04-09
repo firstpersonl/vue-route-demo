@@ -73,8 +73,7 @@
                             :on-preview="handlePictureCardPreview"
                             :on-error="handleError"
                             :on-remove="handleRemove"
-                            :on-success="handleSuccess"
-                            :before-upload="qy_server_upload"
+                            :http-request="qy_server_upload"
                             :on-exceed="handleLimit"
                             :data="file_data"
                             :file-list="fileList">
@@ -95,8 +94,8 @@
                     </vue-editor>
                 </el-col>
             </el-form-item>
-            <el-form-item style="float: right">
-                <el-button type="primary" @click="form_submit('form')" v-text="isLoading?'保存中...':'立即添加'"></el-button>
+            <el-form-item>
+                <el-button type="primary" @click="form_submit('form')" v-text="isLoading?'保存中...':'立即保存'"></el-button>
                 <el-button>取消</el-button>
             </el-form-item>
         </el-form>
@@ -202,9 +201,6 @@
             }
         },
         methods: {
-            handleSuccess(response, file, fileList) {
-                console.log(file, fileList)
-            },
             handleError(err, file, fileList) {
                 this.$message({
                     message: '上传失败请重试！',
@@ -218,13 +214,13 @@
                 this.form.covers.splice(this.form.covers.findIndex((item) => {
                     return item.uid === file.uid;
                 }), 1);
-                if (this.from.covers.length == 0) {
-                    this.from.cover = null;
+                if (this.form.covers.length == 0) {
+                    this.form.cover = null;
                 }
             },
             handlePictureCardPreview(file) {
-                this.dialogImageUrl = file.url;
-                this.dialogVisible = true;
+                // this.dialogImageUrl = file.url;
+                // this.dialogVisible = true;
             },
             handleLimit() {
                 this.$message({
@@ -234,7 +230,7 @@
             },
             qy_server_upload(obj) {
                 const _this = this;
-                const files = obj;
+                const files = obj.file;
                 if (!files) {
                     _this.$message({
                         message: '请选取一张图片',
@@ -274,11 +270,6 @@
                         },
                         data: formData
                     }).then((result) => {
-                        _this.fileList.push({
-                            name: files.name,
-                            uid: files.uid,
-                            url: 'http://kzbpic.oss-cn-qingdao.aliyuncs.com/' + fields.data.key
-                        })
                         let params = {
                             endPoint: "pic.kezhanbang.cn",
                             hotelid: 0,
@@ -295,8 +286,9 @@
                             url: _this.BASE_PATH + '/api/ossImg/image/post.json',
                             method: 'post',
                             data: params
-                        }).then(() => {
-                            _this.form.covers.push(params);
+                        }).then((_) => {
+                            _this.form.covers.push(_.data);
+                            _this.fileList.push(_.data);
                             if (params.seq = 1) {
                                 _this.form.cover = params
                             }
@@ -306,7 +298,6 @@
                         console.log(err);
                     })
                 });
-                return false;
             },
             handleImageAdded(file, Editor, cursorLocation, resetUploader) {
                 let target = document.querySelector('.quillWrapper');
@@ -388,39 +379,40 @@
             },
             progress(total, loaded) {
                 this.percentage = parseInt(loaded / total * 100);
+            },
+            loadDetail(id) {
+                const _this = this;
+                _this.$ajax({
+                    url: _this.BASE_PATH + '/api/store/detail',
+                    method: 'get',
+                    dataType: 'json',
+                    params: {storeId: id}
+                }).then((_) =>{
+                    _this.form = _.data;
+                    _this.fileList = _.data.covers;
+                }).catch((_)=>{
+                    _this.$message({
+                        message: '加载失败返回刷新页面！',
+                        type: 'error'
+                    })
+                })
             }
 
         },
         created: function () {
-            // const _this = this;
-            // const params = {
-            //     hotelId: 0,
-            //     type: 'STORE_COV',
-            //     fileName: 'zzzbbbcccddd123.png',
-            // }
-            // this.$ajax({
-            //     method: 'get',
-            //     url: 'http://gl.kezhanbang.cn/api/oss/gen-fields.json',
-            //     params: params
-            // }).then(function (fields) {
-            //     _this.file_data = fields.data;
-            // });
+            let id = this.$route.params.id;
+            if (id) {
+                this.loadDetail(id);
+            }
         }
     }
 </script>
 <style lang="css">
-    #store_add {
-        padding: 0 15px;
-    }
-
     .text-center {
         text-align: center;
     }
 
     @media (max-width: 765px) {
-        .el-col-16 {
-            width: 100%;
-        }
 
         .el-select {
             width: 100%;

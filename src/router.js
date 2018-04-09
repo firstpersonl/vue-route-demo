@@ -13,6 +13,8 @@ import partyOrders from './views/party_orders.vue';
 import partySettle from './views/party_settle.vue';
 import storeSettle from './views/store_settle.vue';
 import userInfo from './views/user_info.vue';
+import storeDetail from './views/store_detail.vue';
+import displayDetail from './views/display_detail.vue';
 
 Vue.use(Router);
 
@@ -22,6 +24,10 @@ export default new Router({
         {
             path: '/',
             component: stores
+        },
+        {
+            path: '/store/:id',
+            component: storeDetail
         },
         {
             path: '/store_add',
@@ -36,11 +42,19 @@ export default new Router({
             component:displayList
         },
         {
+            path: '/shop/:id',
+            component: displayDetail
+        },
+        {
             path: '/shop_add',
             component: displayAdd
         },
         {
             path: '/party_list',
+            component: partyList
+        },
+        {
+            path: '/party/:id',
             component: partyList
         },
         {

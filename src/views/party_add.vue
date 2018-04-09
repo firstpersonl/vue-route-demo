@@ -427,19 +427,10 @@
  }
 </script>
 <style lang="css">
-    #party_add {
-        padding: 0 15px;
-    }
     .text-center{
         text-align: center;
     }
     @media (max-width: 765px) {
-        .el-col-16 {
-            width: 100%;
-        }
-        .el-col-8 {
-            width: 100%;
-        }
         .el-col-line {
             width: 47.5% !important;
         }

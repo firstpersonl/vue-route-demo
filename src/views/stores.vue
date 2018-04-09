@@ -1,28 +1,34 @@
 <template>
     <div id="store_list">
         <el-container>
-            <el-row :gutter="20">
+            <el-row :gutter="10">
                 <el-col :span="8" :md="6" :sm="8" :xs="12" v-for="store in stores" :key="store.id" class="card_col">
                     <el-card :body-style="{ padding: '0px' }">
-                        <img :src="store.cover.src+'@636w_636h_1c_1e'" class="image" style="width: 100%;">
+                        <router-link :to="'/store/'+store.id">
+                            <img :src="store.cover.src+'@636w_636h_1c_1e'" class="image" style="width: 100%;">
+                        </router-link>
                         <div style="padding: 14px;">
-                            <span v-text="store.title"></span>
-                            <div class="bottom clearfix">
-                                <el-button type="text" class="button">详情</el-button>
+                            <h4 v-text="store.title"></h4>
+                            <div>
+
+                                <span class="card_cur" v-text="store.price+'￥'"></span>
                                 <el-switch
+                                        v-show="store.status"
                                         v-model="store.status"
                                         @change="status_change(store)"
-                                        active-color="#13ce66"
+                                        active-value="ON_SALE"
+                                        inactive-value="REMOVE_OFF_SHELVES"
+                                        active-color="#409EFF"
                                         inactive-color="#ff4949">
                                 </el-switch>
-                                <span class="card_cur" v-text="store.price+'￥'"></span>
+                                <el-button size="mini" type="text" @click="delete_store(store)" plain="true">删除</el-button>
                             </div>
                         </div>
                     </el-card>
                 </el-col>
             </el-row>
         </el-container>
-        <div v-show="pagination.page_count > 0">
+        <div v-show="pagination.page_count > 1">
             <el-pagination
                     background
                     layout="prev, pager, next"
@@ -48,7 +54,7 @@
                 stores: [],
                 pagination: {
                     page_count: 0,
-                    page_size: 10,
+                    page_size: 12,
                     current_page: 1
                 }
             }
@@ -60,11 +66,61 @@
         },
         methods: {
             status_change(store) {
-                //todo http request do something
-                this.$message({
-                    message: store.title + (store.status ? '上架成功' : '已下架'),
-                    type: store.status ? 'success' : 'warning'
-                });
+                const _this = this;
+                _this.$ajax({
+                    url: _this.BASE_PATH + "/api/store/status",
+                    params: {store_id: store.id,status:store.status},
+                    dataType: 'json',
+                    method: 'get'
+                }).then((_) => {
+                    if(_.data.status == 'SUCCESS') {
+                        _this.$message({
+                            message: store.title + (store.status =='ON_SALE' ? '上架成功' : '已下架'),
+                            type: store.status=='ON_SALE' ? 'success' : 'warning'
+                        });
+                    } else {
+                        _this.$message({
+                            message: '修改失败',
+                            type: 'info'
+                        })
+                    }
+                }).catch((_) => {
+                    _this.$message({
+                        message: '修改失败',
+                        type: 'info'
+                    })
+                })
+
+            },
+            delete_store(store) {
+                const _this = this;
+                _this.$ajax({
+                    url: _this.BASE_PATH + "/api/store/status",
+                    method: 'get',
+                    dataType: 'json',
+                    params: {store_id: store.id,status: 'DELETED'}
+                }).then((_) => {
+                    if (_.data.status == 'SUCCESS') {
+                        _this.stores.splice(this.stores.findIndex((item) => {
+                            return item.id == store.id
+                        }), 1);
+                        _this.$message({
+                            message: '删除成功',
+                            type: 'info'
+                        })
+                    }else{
+                        _this.$message({
+                            message: '删除失败',
+                            type: 'error'
+                        })
+                    }
+                }).catch((_) => {
+                    _this.$message({
+                        message: '删除失败',
+                        type: 'error'
+                    })
+                })
+
             },
             headerCurrentChange(currentPage) {
                 this.pagination.current_page = currentPage;
@@ -107,11 +163,11 @@
 </script>
 <style lang="css">
     .card_cur {
-        float: right;
-        padding: 12px 0;
         color: #b11d04;
     }
-
+    h4{
+        margin: 5px 0;
+    }
     .card_col {
         margin-bottom: 15px;
     }

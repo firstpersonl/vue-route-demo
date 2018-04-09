@@ -1,9 +1,9 @@
 <template>
-    <div id="display_add">
+    <div id="store_add">
         <el-form ref="form" :model="form" :rules="rules" size="small" label-width="80px">
-            <el-form-item label="小店名称" prop="name">
+            <el-form-item label="商品名称" prop="title">
                 <el-col :span="16">
-                    <el-input v-model="form.name">
+                    <el-input v-model="form.title">
                     </el-input>
                 </el-col>
             </el-form-item>
@@ -12,98 +12,56 @@
             <!--<el-option v-for="item in category" :key="item.value" :value="item.value" :label="item.name"></el-option>-->
             <!--</el-select>-->
             <!--</el-form-item>-->
-            <el-form-item label="小店简介" prop="story">
+            <el-form-item label="商品产地" prop="producingArea">
                 <el-col :span="16">
-                    <el-input type="textarea" :rows="3" v-model="form.story">
+                    <el-input v-model="form.producingArea">
                     </el-input>
                 </el-col>
             </el-form-item>
-            <el-form-item label="小店故事" prop="storyText">
+            <el-form-item label="工匠" prop="craftsman">
                 <el-col :span="16">
-                    <el-input type="textarea" :rows="3" v-model="form.storyText">
+                    <el-input v-model="form.craftsman">
                     </el-input>
                 </el-col>
             </el-form-item>
-            <!--<el-form-item label="店主姓名" prop="boosName">-->
-            <!--<el-col :span="16">-->
-            <!--<el-input v-model="form.boosName">-->
-            <!--</el-input>-->
-            <!--</el-col>-->
-            <!--</el-form-item>-->
-            <el-form-item label="小店电话" prop="phone">
+            <el-form-item label="制作类型" prop="madeType">
                 <el-col :span="16">
-                    <el-input v-model="form.phone">
-                    </el-input>
-                </el-col>
-            </el-form-item>
-            <!--<el-form-item label="店主微信" prop="weChat">-->
-            <!--<el-col :span="16">-->
-            <!--<el-input v-model="form.weChat">-->
-            <!--</el-input>-->
-            <!--</el-col>-->
-            <!--</el-form-item>-->
-            <el-form-item label="营业时间" prop="workTime">
-                <el-col :span="8">
-                    <el-time-picker
-                            style="width: 100%"
-                            is-range="true"
-                            v-model="work_time"
-                            format="HH:mm"
-                            editable="false"
-                            range-separator="至"
-                            start-placeholder="开始时间"
-                            end-placeholder="结束时间"
-                            placeholder="选择时间范围">
-                    </el-time-picker>
-                </el-col>
-            </el-form-item>
-            <el-form-item label="所在城市" prop="province">
-                <el-col :span="8" class="el-col-line">
-                    <el-select v-model="form.province" placeholder="请选择" @change="get_city" style="width: 100%">
-                        <el-option
-                                v-for="item in province"
-                                :key="item.id"
-                                :label="item.name"
-                                :value="item.id">
+                    <el-select v-model="form.madeType">
+                        <el-option label="纯手工" value="PURE_MANUAL">
                         </el-option>
-                    </el-select>
-                </el-col>
-                <el-col class="line" :span="1">-</el-col>
-                <el-col :span="8" class="el-col-line">
-                    <el-select v-model="form.city" placeholder="请选择" style="width: 100%">
-                        <el-option
-                                v-for="item in city"
-                                :key="item.id"
-                                :label="item.name"
-                                :value="item.id">
+                        <el-option label="半手工" value="HALF_MANUAL">
+                        </el-option>
+                        <el-option label="机械" value="MECHANICAL">
                         </el-option>
                     </el-select>
                 </el-col>
             </el-form-item>
-            <el-form-item label="详细地址" prop="address">
+            <el-form-item label="库存" prop="totalNumber">
                 <el-col :span="16">
-                    <el-input v-model="form.address">
+                    <el-input v-model.number="form.totalNumber">
                     </el-input>
                 </el-col>
             </el-form-item>
-            <el-form-item label="栖居族折扣" prop="disCount">
+            <el-form-item label="原价" prop="promotionPrice">
                 <el-col :span="16">
-                    <el-input v-model.number="form.disCount" placeholder="数字96表示9.6折，输入范围应在10-100之间">
+                    <el-input v-model.number="form.promotionPrice">
+                        <template slot="append"> ¥</template>
+                    </el-input>
+                </el-col>
+            </el-form-item>
+            <el-form-item label="促销价" prop="price">
+                <el-col :span="16">
+                    <el-input v-model.number="form.price">
+                        <template slot="append"> ¥</template>
+                    </el-input>
+                </el-col>
+            </el-form-item>
+            <el-form-item label="栖居族折扣" prop="discount">
+                <el-col :span="16">
+                    <el-input v-model.number="form.discount" placeholder="数字96表示9.6折，输入范围应在10-100之间">
                     </el-input>
                 </el-col>
                 <el-tag type="success">{{discount_text}}</el-tag>
-            </el-form-item>
-            <el-form-item label="小店类型" prop="goodsType">
-                <el-col :span="16">
-                    <el-select v-model="form.goodsType">
-                        <el-option
-                                v-for="item in goodsTypes"
-                                :key="item.value"
-                                :label="item.label"
-                                :value="item.value">
-                        </el-option>
-                    </el-select>
-                </el-col>
             </el-form-item>
             <el-form-item label="封面图片" prop="imgUrl">
                 <el-col :span="16">
@@ -111,34 +69,33 @@
                             action="http://kzbpic.oss-cn-qingdao.aliyuncs.com"
                             accept="image/*"
                             list-type="picture-card"
-                            limit="1"
+                            limit="8"
                             :on-preview="handlePictureCardPreview"
                             :on-error="handleError"
                             :on-remove="handleRemove"
-                            :on-success="handleSuccess"
-                            :before-upload="qy_server_upload"
+                            :http-request="qy_server_upload"
                             :on-exceed="handleLimit"
                             :data="file_data"
                             :file-list="fileList">
                         <i class="el-icon-plus"></i>
                     </el-upload>
-                    <el-progress type="circle" :percentage="percentage" v-show="isLoading"></el-progress>
+                    <el-progress type="circle" :percentage="percentage" v-show="isUploading"></el-progress>
                     <el-dialog :visible.sync="dialogVisible">
                         <img width="100%" :src="dialogImageUrl" alt="">
                     </el-dialog>
                 </el-col>
             </el-form-item>
-            <el-form-item label="文案编辑" prop="describe">
+            <el-form-item label="文案编辑" prop="content">
                 <el-col :span="16">
-                    <vue-editor v-model="form.describe"
+                    <vue-editor v-model="form.content"
                                 useCustomImageHandler
                                 @imageAdded="handleImageAdded"
                                 :editorToolbar="customToolbar">
                     </vue-editor>
                 </el-col>
             </el-form-item>
-            <el-form-item style="float: right">
-                <el-button type="primary" @click="form_submit('form')" v-text="committing?'保存中...':'立即添加'"></el-button>
+            <el-form-item>
+                <el-button type="primary" @click="form_submit('form')" v-text="isLoading?'保存中...':'立即保存'"></el-button>
                 <el-button>取消</el-button>
             </el-form-item>
         </el-form>
@@ -155,7 +112,7 @@
         components: {
             VueEditor
         },
-        name: 'display_add',
+        name: 'store_add',
         data() {
             return {
                 category: [
@@ -164,92 +121,68 @@
                     {name: '思', value: 3},
                     {name: '用', value: 4}
                 ],
-                goodsTypes: [{value: '体验课和工作坊', label: '体验课和工作坊'},
-                    {value: '音乐会', label: '音乐会'},
-                    {value: '社会公益', label: '社会公益'},
-                    {value: '艺术', label: '艺术'},
-                    {value: '餐饮', label: '餐饮'},
-                    {value: '大自然', label: '大自然'},
-                    {value: '运动', label: '运动'},
-                    {value: '历史', label: '历史'},
-                    {value: '娱乐', label: '娱乐'},
-                    {value: '健康与养生', label: '健康与养生'}
-                ],
-                committing: false,
-                work_time: [new Date(), new Date()],
-                province: [],
-                city: [],
                 form: {
-                    name: '',
-                    disCount: 95,
-                    story: '',
-                    storyText: '',
-                    boosName: '',
-                    phone: '',
+                    title: '',
+                    producingArea: '',
+                    promotionPrice: null,
+                    price: null,
+                    totalNumber: null,
+                    discount: 95,
                     // categoryId: 2,
-                    address: '',
-                    workTime: '',
-                    goodsType: '',
-                    weChat: '',
-                    imgUrl: '',
-                    city: null,
-                    province: null,
-                    describe: ''
+                    craftsman: '',
+                    covers: [],
+                    cover: {},
+                    madeType: 'PURE_MANUAL',
+                    content: ''
                 },
                 rules: {
-                    name: [
-                        {required: true, message: '请输入小店名称'},
-                        {max: 15, message: '长度在最大为 15个字符'}
+                    title: [
+                        {required: true, message: '请输入商品名称'},
+                        {min: 3, max: 5, message: '长度在 3 到 5 个字符'}
                     ],
-                    story: [
-                        {required: true, message: '请填写一句小店的描述'},
-                        {max: 50, message: '描述长度最大 为50个字符'}
+                    producingArea: [
+                        {required: true, message: '请输入商品产地'},
+                        {max: 25, message: '地址长度最大 为25个字符'}
                     ],
-                    storyText: [
-                        {required: true, message: '小店故事'},
-                        {max: 100, message: '故事长度最大为 100个字符'}
+                    promotionPrice: [
+                        {required: true, message: '请输入商品原价'},
+                        {type: 'number', message: '必须是数字'}
                     ],
-                    boosName: [
-                        {required: true, message: '小店店主姓名'}
+                    price: [
+                        {required: true, message: '请输入商品促销价'},
+                        {type: 'number', message: '必须是数字'}
                     ],
-                    disCount: [
+                    discount: [
                         {required: true, message: '请填写栖居族商品折扣'},
                         {pattern: /^[1-9][0-9]$/, message: '折扣格式不正确'},
                         {type: 'number', message: '必须是数字'}
                     ],
-                    phone: [
-                        {required: true, message: '小店联系电话'},
-                        {pattern: /^((13[0-9]|15[0-9]|17[0-9]|18[0-9])+\d{8})$/, message: '输入正确联系电话'}
+                    totalNumber: [
+                        {required: true, message: '请输入库存量'},
+                        {type: 'number', message: '必须是数字'}
                     ],
-                    address: [
-                        {required: true, message: '小店具体门牌地址'}
+                    content: [
+                        {required: true, message: '请编辑商品文案'}
                     ],
-                    workTime: [
-                        {required: true, message: '小店营业时间'}
+                    craftsman: [
+                        {required: true, message: '请输入制作工匠'},
+                        {max: 5000, message: '文案长度最长为5000'}
                     ],
-                    goodsType: [
-                        {required: true, message: '小店营业类型'}
+                    type: [
+                        {type: 'array', required: true, message: '请至少选择一个活动性质'}
                     ],
-                    weChat: [
-                        {required: true, message: '小店店主微信'}
+                    resource: [
+                        {required: true, message: '请选择活动资源'}
                     ],
-                    city: [
-                        {required: true, message: '请选择城市'}
-                    ],
-                    province: [
-                        {required: true, message: '请选择省份'}
-                    ],
-                    describe: [
-                        {required: true, message: '请编辑小店详细信息'}
-                    ],
-                    imgUrl: [
-                        {required: true, message: '请上传封面图片'}
+                    desc: [
+                        {required: true, message: '请填写活动形式'}
                     ]
                 },
                 dialogImageUrl: '',
                 dialogVisible: false,
                 fileList: [],
                 isLoading: false,
+                isUploading: false,
                 percentage: 0,
                 file_data: {},
                 customToolbar: [
@@ -260,29 +193,15 @@
                 ]
             }
         },
-        // watch: {
-        //     work_time: function(old, now) {
-        //         this.form.workTime = now[0].getHours().toString()+ ':' +(now[0].getMinutes()+1)+'-'+now[1].getHours().toString()+ ':' +(now[1].getMinutes()+1);
-        //     }
-        // },
+        watch: {},
         computed: {
             // 计算属性的 getter
             discount_text: function () {
                 // `this` 指向 vm 实例
-                return this.form.disCount / 10 + '折';
-            },
-            workTime_text: function () {
-                this.form.workTime = (this.work_time[0].getHours() >= 10 ? this.work_time[0].getHours() : '0' + this.work_time[0].getHours()) + ':'
-                    + (this.work_time[0].getMinutes() >= 10 ? this.work_time[0].getMinutes() : '0' + this.work_time[0].getMinutes()) + '-'
-                    + (this.work_time[1].getHours() >= 10 ? this.work_time[1].getHours() : '0' + this.work_time[1].getHours()) + ':' +
-                    (this.work_time[1].getMinutes() >= 10 ? this.work_time[1].getMinutes() : '0' + this.work_time[1].getMinutes());
-                return this.form.workTime;
+                return this.form.discount / 10 + '折';
             }
         },
         methods: {
-            handleSuccess(response, file, fileList) {
-                console.log(file, fileList)
-            },
             handleError(err, file, fileList) {
                 this.$message({
                     message: '上传失败请重试！',
@@ -293,21 +212,26 @@
                 this.fileList.splice(this.fileList.findIndex((item) => {
                     return item.uid == file.uid
                 }), 1);
-                this.form.imgUrl = null;
+                this.form.covers.splice(this.form.covers.findIndex((item) => {
+                    return item.uid === file.uid;
+                }), 1);
+                if (this.form.covers.length == 0) {
+                    this.form.cover = null;
+                }
             },
             handlePictureCardPreview(file) {
-                this.dialogImageUrl = file.url;
-                this.dialogVisible = true;
+                // this.dialogImageUrl = file.url;
+                // this.dialogVisible = true;
             },
             handleLimit() {
                 this.$message({
-                    message: '封面图最多上传1张图片。',
+                    message: '最多上传8张图片。',
                     type: 'info'
                 })
             },
             qy_server_upload(obj) {
                 const _this = this;
-                const files = obj;
+                const files = obj.file;
                 if (!files) {
                     _this.$message({
                         message: '请选取一张图片',
@@ -315,9 +239,10 @@
                     })
                     return;
                 }
+                _this.isUploading = true;
                 const params = {
                     hotelId: 0,
-                    type: 'MERCHANT_COV',
+                    type: 'STORE_COV',
                     fileName: files.name,
                 }
                 _this.$ajax({
@@ -331,7 +256,6 @@
                         formData.append(key, fields.data[key]);
                     }
                     formData.append('file', files);
-                    _this.isLoading = true;
                     _this.$ajax({
                         url: 'http://kzbpic.oss-cn-qingdao.aliyuncs.com',
                         headers: {
@@ -347,18 +271,34 @@
                         },
                         data: formData
                     }).then((result) => {
-                        _this.fileList.push({
-                            name: files.name,
-                            uid: files.uid,
-                            url: 'http://kzbpic.oss-cn-qingdao.aliyuncs.com/' + fields.data.key
+                        let params = {
+                            endPoint: "pic.kezhanbang.cn",
+                            hotelid: 0,
+                            name: fields.data.fileName,
+                            point: 80,
+                            prefix: "",
+                            roomId: null,
+                            seq: _this.form.covers.length + 1,
+                            style: "",
+                            type: "STORE_COV",
+                            uid: files.uid
+                        }
+                        _this.$ajax({
+                            url: _this.BASE_PATH + '/api/ossImg/image/post.json',
+                            method: 'post',
+                            data: params
+                        }).then((_) => {
+                            _this.form.covers.push(_.data);
+                            //_this.fileList.push(_.data);
+                            if (params.seq = 1) {
+                                _this.form.cover = params
+                            }
                         });
-                        _this.form.imgUrl = 'http://kzbpic.oss-cn-qingdao.aliyuncs.com/' + fields.data.key;
-                        _this.isLoading = false;
                     }).catch((err) => {
                         console.log(err);
                     })
                 });
-                return false;
+                _this.isUploading = false;
             },
             handleImageAdded(file, Editor, cursorLocation, resetUploader) {
                 let target = document.querySelector('.quillWrapper');
@@ -405,34 +345,35 @@
                 const _this = this;
                 _this.$refs[formName].validate((valid) => {
                     if (valid) {
-                        _this.committing = true;
+                        _this.isLoading = true;
                         _this.$ajax({
-                            url: _this.BASE_PATH + '/api/display/add',
+                            url: _this.BASE_PATH + '/api/store/update',
                             data: _this.form,
                             method: 'post',
                             dataType: 'json'
                         }).then((result) => {
                             if (result.data.status === 'SUCCESS') {
                                 _this.$notify({
-                                    title: '添加成功',
-                                    message: '小店添加成功。',
+                                    title: '修改成功',
+                                    message: '风物修改成功。',
                                     type: 'success'
                                 });
-                                _this.$router.push({path: '/shop_list'});
+                                _this.$router.push({path: '/'});
                             } else {
                                 _this.$notify({
-                                    title: '添加失败',
-                                    message: '添加失败，请刷新页面后重试！',
+                                    title: '修改失败',
+                                    message: '风物修改失败，请刷新页面后重试！',
                                     type: 'error'
                                 })
                             }
+                            _this.isLoading = false;
                         }).catch((error) => {
                             _this.$notify({
-                                title: '添加失败',
-                                message: '风物添加失败，请刷新页面后重试！',
+                                title: '修改失败',
+                                message: '风物修改失败，请刷新页面后重试！',
                                 type: 'error'
                             });
-                            _this.committing = false;
+                            _this.isLoading = false;
                         })
                     } else {
                         console.log('error submit!!');
@@ -443,30 +384,30 @@
             progress(total, loaded) {
                 this.percentage = parseInt(loaded / total * 100);
             },
-            get_city(super_id) {
+            loadDetail(id) {
                 const _this = this;
-                _this.form.city = null;
                 _this.$ajax({
-                    url: _this.BASE_PATH + '/api/city/city',
+                    url: _this.BASE_PATH + '/api/store/detail',
                     method: 'get',
                     dataType: 'json',
-                    params: {superId: super_id}
-                }).then((_) => {
-                    _this.city = _.data
-                    _this.form.city = _.data[0].id;
+                    params: {storeId: id}
+                }).then((_) =>{
+                    _this.form = _.data;
+                    _this.fileList = _.data.covers;
+                }).catch((_)=>{
+                    _this.$message({
+                        message: '加载失败返回刷新页面！',
+                        type: 'error'
+                    })
                 })
             }
 
         },
         created: function () {
-            const _this = this;
-            _this.$ajax({
-                url: _this.BASE_PATH + '/api/city/province',
-                method: 'get',
-                dataType: 'json'
-            }).then((p) => {
-                _this.province = p.data;
-            })
+            let id = this.$route.params.id;
+            if (id) {
+                this.loadDetail(id);
+            }
         }
     }
 </script>
@@ -476,9 +417,6 @@
     }
 
     @media (max-width: 765px) {
-        .el-col-line {
-            width: 47.5% !important;
-        }
 
         .el-select {
             width: 100%;
@@ -509,9 +447,5 @@
 
     .ql-container.ql-snow {
         border: none !important;
-    }
-
-    .line {
-        text-align: center;
     }
 </style>

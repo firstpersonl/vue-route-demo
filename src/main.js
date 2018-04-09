@@ -94,7 +94,7 @@ Vue.use(Switch);
 Vue.use(Select);
 Vue.use(Option);
 Vue.use(OptionGroup);
-Vue.use(Button);
+Vue.use(Button,{size: 'mini'});
 Vue.use(ButtonGroup);
 Vue.use(Table);
 Vue.use(TableColumn);
