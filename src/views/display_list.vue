@@ -8,9 +8,8 @@
                         <div style="padding: 8px;">
                             <h4 v-text="store.name"></h4>
                             <div class="bottom clearfix">
-                                <el-button type="warning" size="mini" v-show="store.isshow === 0"
-                                           icon="el-icon-bell" @click="invalid(store.name)"></el-button>
-                                <el-button type="danger" size="mini" icon="el-icon-delete" @click="display_delete(store.id)"></el-button>
+                                <el-button type="warning" size="mini" v-show="store.isshow === 0" @click="invalid(store.name)">通知审核</el-button>
+                                <el-button type="danger" size="mini" @click="display_delete(store.id)">删除</el-button>
                             </div>
                         </div>
                     </el-card>

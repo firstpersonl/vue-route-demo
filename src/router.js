@@ -1,6 +1,5 @@
 import Vue from 'vue';
 import Router from 'vue-router';
-import homePage from './views/home.vue';
 import aboutPage from './views/about.vue';
 import displayList from './views/display_list.vue';
 import displayAdd from './views/display_add.vue';
@@ -11,6 +10,7 @@ import partyAdd from  './views/party_add.vue';
 import storeOrder from  './views/store_order.vue';
 import partyOrders from './views/party_orders.vue';
 import partySettle from './views/party_settle.vue';
+import partyDetail from './views/party_detail.vue';
 import storeSettle from './views/store_settle.vue';
 import userInfo from './views/user_info.vue';
 import storeDetail from './views/store_detail.vue';
@@ -55,7 +55,7 @@ export default new Router({
         },
         {
             path: '/party/:id',
-            component: partyList
+            component: partyDetail
         },
         {
             path: '/party_add',

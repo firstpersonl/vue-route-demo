@@ -176,7 +176,7 @@
                     {value: '健康与养生',label: '健康与养生'}
                 ],
                 committing: false,
-                work_time: [new Date(),new Date()],
+                work_time: [new Date(1525564800000),new Date(1523361600000)],
                 province: [],
                 city: [],
                 form: {

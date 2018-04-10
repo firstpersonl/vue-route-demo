@@ -138,7 +138,7 @@
                 </el-col>
             </el-form-item>
             <el-form-item style="float: right">
-                <el-button type="primary" @click="form_submit('form')" v-text="committing?'保存中...':'立即添加'"></el-button>
+                <el-button type="primary" @click="form_submit('form')" v-text="committing?'保存中...':'立即保存'"></el-button>
                 <el-button>取消</el-button>
             </el-form-item>
         </el-form>
@@ -176,7 +176,7 @@
                     {value: '健康与养生', label: '健康与养生'}
                 ],
                 committing: false,
-                work_time: [new Date(), new Date()],
+                work_time: [new Date(1525564800000),new Date(1523361600000)],
                 province: [],
                 city: [],
                 form: {

@@ -4,13 +4,15 @@
             <el-row :gutter="10">
                 <el-col :span="8" :md="6" :sm="8" :xs="12" v-for="party in partys" :key = "party.id" class="card_col" style="margin-bottom: 10px;">
                     <el-card :body-style="{ padding: '0px' }">
-                        <img :src="party.imgUrl" class="image" style="width: 100%">
+                        <router-link :to="'/party/'+party.id">
+                            <img :src="party.imgUrl" class="image" style="width: 100%">
+                        </router-link>
                         <div style="padding: 8px;">
-                            <span v-text="party.partyName"></span>
+                            <h4 v-text="party.partyName"></h4>
                             <div class="bottom clearfix">
                                 <!--<el-button type="text">详情</el-button>-->
-                                <el-button type="info" size="mini" v-if="party.isshow ===0" class="display_card_mini_btn">通知审核</el-button>
-                                <el-button type="danger" size="mini" class="display_card_mini_btn">删除</el-button>
+                                <el-button type="warning" size="mini" v-if="party.isshow ===0" @click="invalid(party.partyName)" class="display_card_mini_btn">通知审核</el-button>
+                                <el-button type="danger" size="mini" class="display_card_mini_btn" @click="party_delete(party.id)">删除</el-button>
                             </div>
                         </div>
                     </el-card>
@@ -58,6 +60,63 @@
                 this.pagination.current_page = currentPage;
                 this.loadData();
             },
+            invalid(title) {
+                const _this = this;
+                _this.$ajax({
+                    url: _this.BASE_PATH + '/api/party/invalid',
+                    method: 'get',
+                    params: {title: title},
+                    dataType: 'json'
+                }).then((_)=>{
+                    if(_.data.status == 'SUCCESS') {
+                        _this.$message({
+                            message: '审核申请发送成功',
+                            type: 'success'
+                        });
+                        //event.setAttribute("disabled","disabled");
+                    } else {
+                        _this.$message({
+                            message: '审核申请发送失败',
+                            type: 'info'
+                        })
+                    }
+                    return event;
+                }).catch((_) => {
+                    _this.$message({
+                        message: '审核申请发送失败',
+                        type: 'info'
+                    })
+                })
+            },
+            party_delete(id) {
+                const _this = this;
+                _this.$ajax({
+                    url: _this.BASE_PATH + '/api/party/delete',
+                    method: 'get',
+                    params: {party_id: id},
+                    dataType: 'json'
+                }).then((_) => {
+                    if (_.data.status == 'SUCCESS') {
+                        _this.partys.splice(this.partys.findIndex((item) => {
+                            return item.id == id
+                        }), 1);
+                        _this.$message({
+                            message: '删除成功',
+                            type: 'info'
+                        })
+                    } else {
+                        _this.$message({
+                            message: '删除失败',
+                            type: 'error'
+                        })
+                    }
+                }).catch((_) => {
+                    _this.$message({
+                        message: '删除失败',
+                        type: 'error'
+                    })
+                })
+            },
             loadData() {
                 let target = document.querySelector('#main_container');
                 let loadingInstance = Loading.service({
@@ -97,5 +156,8 @@
 <style lang="css">
     .display_card_mini_btn {
         padding: 7px 10px;
+    }
+    h4 {
+        margin: 5px 0;
     }
 </style>
