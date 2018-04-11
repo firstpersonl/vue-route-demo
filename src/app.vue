@@ -8,7 +8,9 @@
                 <header-tab></header-tab>
             </el-header>
             <el-main class="main_mt_15 main_view">
-                <router-view></router-view>
+                <transition name="component-fade" mode="out-in">
+                    <router-view></router-view>
+                </transition>
             </el-main>
             <!--<el-footer>©2013-2017 客栈帮 蜀ICP备13025558号-1</el-footer>-->
         </el-container>
@@ -49,6 +51,29 @@
 
     export default {
         name: 'main_context',
+        beforeCreate: function () {
+            const _this = this;
+            if (!_this.USER_INFO) {
+                _this.$ajax({
+                    url: _this.BASE_PATH + '/api/user/info',
+                    method: 'get',
+                    dataType: 'json'
+                }).then((_)=> {
+                    _this.USER_INFO = _.data.data.user;
+                    if (_this.USER_INFO.initStatus !=='SUCCESS'){
+                        _this.$notify({
+                            title: '完善信息',
+                            message: '个人信息不完整，请先完善个人信息！',
+                            type: 'warning',
+                            duration: 0
+                        });
+                        _this.$router.push({path: '/user_info'});
+                    }
+                }).catch((_) =>{
+                    console.log("信息获取失败...")
+                })
+            }
+        },
         data() {
         },
         components: {
@@ -105,5 +130,12 @@
     }
     .el-menu {
         border-right: none;
+    }
+    .component-fade-enter-active, .component-fade-leave-active {
+        transition: opacity .3s ease;
+    }
+    .component-fade-enter, .component-fade-leave-to
+        /* .component-fade-leave-active for below version 2.1.8 */ {
+        opacity: 0;
     }
 </style>

@@ -66,15 +66,15 @@ export default new Router({
             component: storeOrder
         },
         {
-            path: '/store_settle',
+            path: '/store_settle/:status',
             component: storeSettle
         },
         {
-            path: '/party_orders',
+            path: '/party_orders/:id',
             component: partyOrders
         },
         {
-            path: '/party_settle',
+            path: '/party_settle/:status',
             component: partySettle
         },
         {

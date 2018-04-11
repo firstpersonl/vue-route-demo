@@ -35,7 +35,7 @@
                     :page-count="pagination.page_count"
                     :page-size="pagination.page_size"
                     @current-change="headerCurrentChange"
-                    :current-page.aysc="pagination.current_page">
+                    :current-page.aysc="pagination.current_page + 1">
             </el-pagination>
         </div>
 
@@ -55,7 +55,7 @@
                 pagination: {
                     page_count: 0,
                     page_size: 12,
-                    current_page: 1
+                    current_page: 0
                 }
             }
         },
@@ -123,7 +123,7 @@
 
             },
             headerCurrentChange(currentPage) {
-                this.pagination.current_page = currentPage;
+                this.pagination.current_page = currentPage - 1;
                 this.loadData();
             },
             loadData() {
@@ -134,7 +134,7 @@
                 });
                 const _this = this;
                 const params = {
-                    page: _this.pagination.current_page - 1,
+                    page: _this.pagination.current_page,
                     size: _this.pagination.page_size
                 };
                 _this.$ajax({
@@ -145,7 +145,7 @@
                 }).then(function (data) {
                     _this.stores = data.data.content;
                     _this.pagination.page_count = data.data.totalPages;
-                    _this.pagination.current_page = data.data.number + 1;
+                    _this.pagination.current_page = data.data.number;
                     loadingInstance.close();
                 }).catch(function (data) {
                     _this.$message({

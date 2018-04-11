@@ -59,24 +59,48 @@
                             <span slot="title">风物订单</span>
                         </el-menu-item>
                     </router-link>
-                    <router-link to="/store_settle" tag="li">
-                        <el-menu-item index="/store_settle">
-                            <i class="el-icon-document"></i>
-                            <span slot="title">风物结算</span>
-                        </el-menu-item>
-                    </router-link>
-                    <router-link to="/party_orders" tag="li">
-                        <el-menu-item index="/party_orders">
-                            <i class="el-icon-document"></i>
-                            <span slot="title">玩法订单</span>
-                        </el-menu-item>
-                    </router-link>
-                    <router-link to="/party_settle" tag="li">
-                        <el-menu-item index="/party_settle">
-                            <i class="el-icon-document"></i>
-                            <span slot="title">玩法结算</span>
-                        </el-menu-item>
-                    </router-link>
+                    <!--<router-link to="/store_settle" tag="li">-->
+                        <!--<el-menu-item index="/store_settle">-->
+                            <!--<i class="el-icon-document"></i>-->
+                            <!--<span slot="title">风物结算</span>-->
+                        <!--</el-menu-item>-->
+                    <!--</router-link>-->
+                    <el-submenu index="5">
+                        <template slot="title">
+                            <i class="el-icon-bell"></i>
+                            <span>风物结算</span>
+                        </template>
+                        <el-menu-item-group>
+                            <template slot="title">风物结算</template>
+                            <router-link to="/store_settle/SETTLED" tag="li">
+                                <el-menu-item index="/store_settle/SETTLED"><i class="el-icon-star-on"></i> 已结算</el-menu-item>
+                            </router-link>
+                            <router-link to="/store_settle/READY" tag="li">
+                                <el-menu-item index="/store_settle/READY"><i class="el-icon-document"></i> 未结算</el-menu-item>
+                            </router-link>
+                        </el-menu-item-group>
+                    </el-submenu>
+                    <!--<router-link to="/party_orders" tag="li">-->
+                        <!--<el-menu-item index="/party_orders">-->
+                            <!--<i class="el-icon-document"></i>-->
+                            <!--<span slot="title">玩法订单</span>-->
+                        <!--</el-menu-item>-->
+                    <!--</router-link>-->
+                    <el-submenu index="4">
+                        <template slot="title">
+                            <i class="el-icon-bell"></i>
+                            <span>玩法结算</span>
+                        </template>
+                        <el-menu-item-group>
+                            <template slot="title">玩法结算</template>
+                            <router-link to="/party_settle/settled" tag="li">
+                                <el-menu-item index="/party_settle/settled"><i class="el-icon-star-on"></i> 已结算</el-menu-item>
+                            </router-link>
+                            <router-link to="/party_settle/unsettle" tag="li">
+                                <el-menu-item index="/party_settle/unsettle"><i class="el-icon-document"></i> 未结算</el-menu-item>
+                            </router-link>
+                        </el-menu-item-group>
+                    </el-submenu>
 
                 </el-menu>
             </el-col>

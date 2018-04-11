@@ -44,6 +44,16 @@
                     prop="desc">
             </el-table-column>
         </el-table>
+        <div v-show="pagination.page_count > 1">
+            <el-pagination
+                    background
+                    layout="prev, pager, next"
+                    :page-count="pagination.page_count"
+                    :page-size="pagination.page_size"
+                    @current-change="headerCurrentChange"
+                    :current-page.aysc="pagination.current_page + 1">
+            </el-pagination>
+        </div>
     </div>
 </template>
 
@@ -72,44 +82,50 @@
 <script>
     import 'element-ui/lib/theme-chalk/table.css';
     import 'element-ui/lib/theme-chalk/table-column.css';
+    import {Loading} from 'element-ui';
 
     export default {
         data() {
             return {
-                tableData5: [{
-                    id: '12987122',
-                    name: '好滋好味鸡蛋仔',
-                    category: '江浙小吃、小吃零食',
-                    desc: '荷兰优质淡奶，奶香浓而不腻',
-                    address: '上海市普陀区真北路',
-                    shop: '王小虎夫妻店',
-                    shopId: '10333'
-                }, {
-                    id: '12987123',
-                    name: '好滋好味鸡蛋仔',
-                    category: '江浙小吃、小吃零食',
-                    desc: '荷兰优质淡奶，奶香浓而不腻',
-                    address: '上海市普陀区真北路',
-                    shop: '王小虎夫妻店',
-                    shopId: '10333'
-                }, {
-                    id: '12987125',
-                    name: '好滋好味鸡蛋仔',
-                    category: '江浙小吃、小吃零食',
-                    desc: '荷兰优质淡奶，奶香浓而不腻',
-                    address: '上海市普陀区真北路',
-                    shop: '王小虎夫妻店',
-                    shopId: '10333'
-                }, {
-                    id: '12987126',
-                    name: '好滋好味鸡蛋仔',
-                    category: '江浙小吃、小吃零食',
-                    desc: '荷兰优质淡奶，奶香浓而不腻',
-                    address: '上海市普陀区真北路',
-                    shop: '王小虎夫妻店',
-                    shopId: '10333'
-                }]
+                orders: [],
+                pagination: {
+                    page_count: 0,
+                    page_size: 10,
+                    current_page: 1
+                }
             }
+        },
+        methods: {
+            loadData() {
+                const _this = this;
+                const params = {
+                    page: _this.pagination.current_page - 1,
+                    size: _this.pagination.page_size
+                }
+                let target = document.querySelector('.main_view')
+                let loadingInstance = Loading.service({
+                    target: target,
+                    text: '加载中'
+                })
+                _this.$ajax({
+                    url: _this.BASE_PATH + '/api/party/order/'+_this.$route.params.id,
+                    method: 'get',
+                    params: params,
+                    dataType: 'json'
+                }).then((_) => {
+                    _this.orders = _.data.content;
+                    _this.pagination.page_count = _.data.totalPages;
+                    _this.pagination.current_page = _.data.number;
+                    loadingInstance.close();
+                })
+            },
+            headerCurrentChange(currentPage) {
+                this.pagination.current_page = currentPage;
+                this.loadData();
+            }
+        },
+        mounted: function () {
+            this.loadData();
         }
     }
 </script>

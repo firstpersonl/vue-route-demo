@@ -76,12 +76,12 @@
                         <span slot="title">风物结算</span>
                     </el-menu-item>
                 </router-link>
-                <router-link to="/party_orders" tag="li">
-                    <el-menu-item index="/party_orders">
-                        <i class="el-icon-document"></i>
-                        <span slot="title">玩法订单</span>
-                    </el-menu-item>
-                </router-link>
+                <!--<router-link to="/party_orders" tag="li">-->
+                    <!--<el-menu-item index="/party_orders">-->
+                        <!--<i class="el-icon-document"></i>-->
+                        <!--<span slot="title">玩法订单</span>-->
+                    <!--</el-menu-item>-->
+                <!--</router-link>-->
                 <router-link to="/party_settle" tag="li">
                     <el-menu-item index="/party_settle">
                         <i class="el-icon-document"></i>

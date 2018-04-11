@@ -111,7 +111,7 @@
                 })
             },
             loadData(current_page) {
-                let target = document.querySelector('.main_container');
+                let target = document.querySelector('.main_view');
                 let loadingInstance = Loading.service({
                     target: target,
                     text: '加载中'

@@ -71,6 +71,7 @@
     import 'element-ui/lib/theme-chalk/table-column.css';
     import 'element-ui/lib/theme-chalk/message-box.css';
     import {moment} from 'moment';
+    import {Loading} from 'element-ui';
 
     export default {
         data() {
@@ -79,7 +80,7 @@
                 pagination: {
                     page_count: 0,
                     page_size: 10,
-                    current_page: 1
+                    current_page: 0
                 }
             }
         },
@@ -92,8 +93,13 @@
         methods: {
             loadData() {
                 const _this = this;
+                let target = document.querySelector('.main_view');
+                let loadingInstance = Loading.service({
+                    target: target,
+                    text: '加载中'
+                });
                 const params = {
-                    page: _this.pagination.current_page - 1,
+                    page: _this.pagination.current_page,
                     size: _this.pagination.page_size
                 };
                 _this.$ajax({
@@ -105,10 +111,11 @@
                     _this.orders = data.data.content;
                     _this.pagination.page_count = data.data.totalPages;
                     _this.pagination.current_page = data.data.number;
+                    loadingInstance.close();
                 })
             },
             headerCurrentChange(currentPage) {
-                this.pagination.current_page = currentPage;
+                this.pagination.current_page = currentPage - 1;
                 this.loadData();
             },
             express_info(order){
@@ -166,7 +173,7 @@
                 });
             }
         },
-        created: function () {
+        mounted: function() {
             this.loadData();
         }
     }

@@ -12,6 +12,7 @@
                             <div class="bottom clearfix">
                                 <!--<el-button type="text">详情</el-button>-->
                                 <el-button type="warning" size="mini" v-if="party.isshow ===0" @click="invalid(party.partyName)" class="display_card_mini_btn">通知审核</el-button>
+                                <router-link :to="'/party_orders/'+party.id">订单</router-link>
                                 <el-button type="danger" size="mini" class="display_card_mini_btn" @click="party_delete(party.id)">删除</el-button>
                             </div>
                         </div>
